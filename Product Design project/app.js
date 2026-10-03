@@ -8,54 +8,54 @@
   var lang = 'en';
 
   var WORKS_A = [
-    { img: 'desktop-storage.jpg', thumb: 'desktop-storage-thumb.webp', year: '2018',
+    { img: 'desktop-storage.jpg', year: '2018',
       en: 'DESKTOP STORAGE', zh: '桌面收纳',
       descEn: 'A modular pen holder inspired by ancient Chinese city walls. Modules recombine to flexibly adjust storage capacity; two dice with playful faces invite fidgeting — a small ritual for easing stress.',
       descZh: '以中国古代城墙为造型意象的模块化笔筒。模块自由组合，灵活调整收纳容量；两枚表情各异的骰子藏着轻量互动，闲时把玩、顺手解压。' },
-    { img: 'harvest-desk-lamp.jpg', thumb: 'harvest-desk-lamp-thumb.webp', year: '2019',
+    { img: 'harvest-desk-lamp.jpg', year: '2019',
       en: 'HARVEST DESK LAMP', zh: '丰收桌面收纳灯',
       descEn: 'A desk lamp designed around the joy of harvest. Its glowing "fruits" can be picked and placed wherever light is needed; the base doubles as desktop storage.',
       descZh: '以“收获的喜悦”为灵感的桌面台灯。光源化作可摘取的“果实”，随手取用、随处安放；底座兼具桌面置物功能。' },
-    { img: 'storytelling-machine.jpg', thumb: 'storytelling-machine-thumb.webp', year: '2019',
+    { img: 'storytelling-machine.jpg', year: '2019',
       en: 'STORYTELLING MACHINE', zh: '故事演绎机',
       descEn: 'A storytelling companion for children\u2019s imagination and expression. Using "people, events and objects" as narrative threads, it turns wild imagination into scenes you can see and stories you can tell.',
       descZh: '陪伴儿童想象力与表达的故事装置。以“人、事、物”为叙事线索，把天马行空的想象变成看得见、讲得出的故事。' },
-    { img: 'white-noise-sleep-aid.jpg', thumb: 'white-noise-sleep-aid-thumb.webp', year: '2020',
+    { img: 'white-noise-sleep-aid.jpg', year: '2020',
       en: 'WHITE NOISE SLEEP AID', zh: '白噪音助眠仪',
       descEn: 'Undergraduate thesis project. A white-noise sleep-aid device with chess-game interaction, designed for insomnia \u2014 a common struggle among older adults. Hearing, vision and smell work together to ease users into sleep.',
       descZh: '本科毕业设计。融合棋类互动的白噪音助眠设备，针对老年人常见的失眠困扰，以听觉、视觉与嗅觉三重感官助人安然入睡。' },
-    { img: 'treehole-coffee-machine.jpg', thumb: 'treehole-coffee-machine-thumb.webp', year: '2020',
+    { img: 'treehole-coffee-machine.jpg', year: '2020',
       en: 'TREE HOLE COFFEE MACHINE', zh: '树洞咖啡机',
       descEn: 'Inspired by squirrels stashing food in tree hollows \u2014 every rummage a different surprise. The spirit of "exploration and the unknown" is woven into the coffee ritual.',
       descZh: '灵感来自松鼠在树洞储食——每次翻找都有不同惊喜。将“探索与未知”融进每一次煮咖啡的仪式。' },
-    { img: 'mixed-reality-telemedicine-system.jpg', thumb: 'mixed-reality-telemedicine-system-thumb.webp', year: '2021',
+    { img: 'mixed-reality-telemedicine-system.jpg', year: '2021',
       en: 'MIXED-REALITY TELEMEDICINE', zh: '混合现实远程医疗系统',
       descEn: 'Bringing mixed reality into telemedicine to extend medical expertise to underserved regions \u2014 synchronizing surgeons\u2019 actions in real time for remote observation and guidance.',
       descZh: '将混合现实引入远程医疗，让优质医疗能力向资源匮乏的地区延伸——实时同步医生操作，清晰呈现异地手术进程。' }
   ];
 
   var WORKS_B = [
-    { img: 'zen-desk-night-lamp.jpg', thumb: 'zen-desk-night-lamp-thumb.webp', year: '2023',
+    { img: 'zen-desk-night-lamp.jpg', year: '2023',
       en: 'ZEN DESK NIGHT LAMP', zh: '静山·禅意桌面夜灯',
       descEn: 'Rooted in Eastern Zen aesthetics \u2014 high-fired natural stone base, soft pebble-form shade glowing with moon-like warmth. A quiet visual and spiritual refuge on the desktop.',
       descZh: '以东方禅意美学为灵感：天然石材高温烧制灯座，卵石形态灯罩透出温润如月的光晕，为都市人群营造桌面上的精神栖息地。' },
-    { img: 'message-desk-lamp.jpg', thumb: 'message-desk-lamp-thumb.webp', year: '2023',
+    { img: 'message-desk-lamp.jpg', year: '2023',
       en: 'MESSAGE DESK LAMP', zh: '光笺·桌面留言台灯',
       descEn: 'The lighting area doubles as a memo space \u2014 a soft halo that sets off handwritten notes. A desktop companion balancing utility and ritual.',
       descZh: '照明区域与留言便签合二为一：灯光亮起时，柔和光晕与手写留言相互映衬，兼顾实用性与仪式感。' },
-    { img: 'high-bay-light.jpg', thumb: 'high-bay-light-thumb.webp', year: '2024',
+    { img: 'high-bay-light.jpg', year: '2024',
       en: 'HIGH BAY LIGHT', zh: '工矿灯',
       descEn: 'For high-bay plants, warehouses and industrial workshops in the Middle East \u2014 one-piece die-cast aluminum heatsink, UV- and heat-resistant coating, precision optics and wide-voltage compatibility.',
       descZh: '针对中东高棚厂房、仓储物流与工业车间：高纯度压铸铝一体成型散热、抗紫外线耐高温涂层、精准配光、宽电压适配。' },
-    { img: 'tri-proof-light.jpg', thumb: 'tri-proof-light-thumb.webp', year: '2024',
+    { img: 'tri-proof-light.jpg', year: '2024',
       en: 'TRI-PROOF LIGHT', zh: '三防灯',
       descEn: 'Built for harsh environments \u2014 parking lots, tunnels, chemical plants and cold storage. High ingress protection, anti-corrosion housing, modular quick-connection.',
       descZh: '专为严苛环境打造：停车场、隧道、化工厂及冷库。高防护等级、耐腐蚀外壳、模块化快速拼接。' },
-    { img: 'sports-field-light.jpg', thumb: 'sports-field-light-thumb.webp', year: '2024',
+    { img: 'sports-field-light.jpg', year: '2024',
       en: 'SPORTS FIELD LIGHT', zh: '球场灯',
       descEn: 'Multi-module matrix design with anti-glare shields and high-transmittance lenses \u2014 high CRI, flicker-free, meeting the demands of HD-broadcast events.',
       descZh: '多模块矩阵设计，专业防眩光遮光罩与高透光率透镜，高显色、无频闪，满足高清转播级赛事要求。' },
-    { img: 'floodlight.jpg', thumb: 'floodlight-thumb.webp', year: '2024',
+    { img: 'floodlight.jpg', year: '2024',
       en: 'FLOODLIGHT', zh: '泛光灯',
       descEn: 'For facades, ports and plazas \u2014 die-cast aluminum housing, tempered glass, adjustable beam angles, breather valve and dust-sealed interior for desert climates.',
       descZh: '适用于建筑外墙、港口码头与广场：压铸铝外壳、钢化玻璃、可调光学角度，呼吸阀与防尘密封应对沙漠气候。' }
@@ -120,7 +120,7 @@
       d.className = 'member';
       d.dataset.i = i;
       var img = document.createElement('img');
-      img.src = IMG + w.thumb;
+      img.src = IMG + w.img;
       img.alt = w.en;
       img.draggable = false;
       img.loading = 'lazy';
