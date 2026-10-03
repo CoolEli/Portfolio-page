@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title data-zh="九里 · 线上线下融合的文旅服务设计" data-en="JIULI · An O2O Cultural Tourism Service Design">九里 · 线上线下融合的文旅服务设计</title>
+<meta name="description" data-zh="九里：2022年课程项目，以峰终定律为框架的线上线下融合景区服务设计。" data-en="JIULI: a 2022 course project, an O2O scenic service design framed by the Peak-End Rule." content="九里：2022年课程项目，以峰终定律为框架的线上线下融合景区服务设计。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Doto:wght@700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000;--text:#fff;--muted:#8e8e8e;
+  --pink:#f03d6e;--pink-deep:#d12a58;--pink-soft:#ffe7ee;
+  --line-dark:#1e1e1e;--line-light:#e9e9e9;
+  --radius:24px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:#000}
+body{background:#000;color:#fff;line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+::selection{background:var(--pink);color:#fff}
+
+/* ---------- language-adaptive typography ---------- */
+html[lang="zh"] body{font-family:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Inter",sans-serif}
+html[lang="zh"] p{line-height:1.95;text-align:justify}
+html[lang="zh"] h1,html[lang="zh"] h2,html[lang="zh"] h3{letter-spacing:.05em}
+html[lang="en"] body{font-family:"Inter","Noto Sans SC",-apple-system,"Segoe UI",sans-serif}
+html[lang="en"] p{line-height:1.72;text-align:left}
+html[lang="en"] h1,html[lang="en"] h2{letter-spacing:-.02em}
+html[lang="en"] h3{letter-spacing:.01em}
+/* ================================================================
+   å¯¼èªæ  ââ ä¸¥æ ¼éµå¾ª Dunhuang é¡¹ç®é¡µé»è¾ï¼
+   å·¦ brand è¶å + ä¸­é¨å±ä¸­ nav-pill + å³ lang-toggleï¼Back home ä¸ºå·¦ä¾§æ¬æµ® fab
+   ================================================================ */
+.site-header{position:fixed;top:0;left:0;right:0;z-index:50;
+  padding:calc(14px + env(safe-area-inset-top)) clamp(14px,2.4vw,26px) 14px clamp(14px,3vw,32px);
+  background:linear-gradient(180deg,rgba(0,0,0,.75),rgba(0,0,0,0));pointer-events:none}
+.header-inner{max-width:1180px;margin:0 0 0 auto;display:flex;align-items:center;justify-content:flex-end;
+  gap:clamp(10px,1.7vw,18px);pointer-events:auto}
+.brand{display:inline-flex;align-items:center;gap:9px;height:clamp(44px,5.2vw,48px);padding:0 18px;flex:0 0 auto;
+  border-radius:999px;background:#fff;color:#000;border:1px solid rgba(0,0,0,.08);box-shadow:0 10px 30px rgba(0,0,0,.10);
+  font-family:'Doto',"Noto Sans SC",sans-serif;font-weight:800;font-size:clamp(11px,1.1vw,13px);letter-spacing:.08em;white-space:nowrap;
+  transition:transform .2s ease,background .2s ease}
+.brand:hover{transform:translateY(-1px);background:#f2f2f2}
+.brand .dot{width:8px;height:8px;border-radius:50%;background:var(--pink);flex:0 0 auto}
+.nav-pill{height:clamp(44px,5.2vw,48px);width:max-content;max-width:100%;flex:0 1 auto;display:flex;align-items:center;
+  justify-content:center;gap:2px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:999px;
+  box-shadow:0 10px 30px rgba(0,0,0,.10);overflow:auto;scrollbar-width:none;padding:4px 10px}
+.nav-pill::-webkit-scrollbar{display:none}
+.nav-link{position:relative;font-family:'Doto',"Noto Sans SC",sans-serif;color:rgba(0,0,0,.62);font-weight:700;
+  font-size:clamp(11px,1.1vw,14px);letter-spacing:-.01em;padding:10px 14px 13px;white-space:nowrap;transition:color .2s}
+.nav-link:hover{color:#000}
+.nav-link.active{color:#000}
+.nav-link.active::after{content:"";position:absolute;width:3px;height:3px;background:var(--pink);border-radius:50%;
+  left:50%;bottom:5px;transform:translateX(-50%);box-shadow:-5px 0 var(--pink),5px 0 var(--pink)}
+.lang-toggle{display:inline-flex;align-items:center;background:#fff;border:1px solid rgba(0,0,0,.08);
+  border-radius:999px;padding:4px;box-shadow:0 10px 30px rgba(0,0,0,.10)}
+.lang-toggle button{border:0;background:transparent;color:#2e2e2e;opacity:.45;font-family:'Doto',sans-serif;
+  font-size:10px;font-weight:700;padding:7px 8px;border-radius:999px;cursor:pointer;transition:all .2s}
+.lang-toggle button.active{opacity:1;background:#000;color:#fff}
+/* Back home å·¦æ¬æµ®è¶å */
+.fab{display:inline-flex;align-items:center;gap:9px;height:46px;padding:0 20px;border:0;border-radius:999px;
+  background:#fff;color:#000;font-family:'Doto',"Noto Sans SC",sans-serif;font-weight:700;font-size:12px;letter-spacing:.05em;white-space:nowrap;
+  box-shadow:0 0 0 1px rgba(255,255,255,.18),0 6px 22px rgba(0,0,0,.35);cursor:pointer;
+  transition:background .25s,color .25s,transform .25s}
+.fab:hover{background:var(--pink);color:#fff;transform:translateY(-2px)}
+.fab-home{position:fixed;top:calc(14px + env(safe-area-inset-top) + clamp(44px,5.2vw,48px)/2);left:clamp(14px,3vw,32px);
+  z-index:60;transform:translateY(-50%)}
+.fab-home:hover{transform:translateY(-50%) translateY(-2px)}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;min-height:100vh;min-height:100svh;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:130px clamp(20px,7vw,120px) 70px;overflow:hidden;background:#000;color:#fff;
+}
+.hero-bg{position:absolute;inset:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;opacity:.38}
+.hero-bg::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.62) 0%,rgba(0,0,0,.28) 42%,rgba(0,0,0,.88) 100%)}
+.hero-inner{position:relative;z-index:2;width:min(100%,900px);display:flex;flex-direction:column;align-items:center}
+.eyebrow{display:inline-block;font-family:'Doto',"Noto Sans SC","PingFang SC",sans-serif;font-size:12px;font-weight:700;color:#fff;background:var(--pink);
+  padding:9px 20px;border-radius:999px;margin-bottom:26px;letter-spacing:.14em}
+html[lang="zh"] .eyebrow{letter-spacing:.3em}
+.hero h1{font-family:'Doto',"Noto Sans SC","PingFang SC",sans-serif;font-weight:800;
+  font-size:clamp(72px,14vw,168px);line-height:1;margin-bottom:18px}
+html[lang="en"] .hero h1{font-size:clamp(56px,11vw,132px);letter-spacing:-.04em}
+.hero .sub{font-size:clamp(16px,2.2vw,22px);font-weight:600;max-width:36em;margin-bottom:14px;color:#f2f2f2}
+.hero .desc{font-size:15px;color:#c9c9c9;max-width:46em;margin-bottom:34px}
+html[lang="zh"] .hero .desc{text-align:center}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.btn{display:inline-flex;font-family:'Doto',"Noto Sans SC","PingFang SC",sans-serif;font-weight:700;align-items:center;gap:8px;padding:13px 28px;border-radius:999px;
+  font-weight:600;font-size:14.5px;transition:transform .2s ease,box-shadow .2s ease,background .2s;cursor:pointer;border:0;font-family:inherit}
+.btn-white{background:#fff;color:#000;box-shadow:0 0 0 1px rgba(255,255,255,.15),0 0 22px rgba(255,255,255,.30)}
+.btn-white:hover{transform:translateY(-2px)}
+.btn-ghost{background:rgba(255,255,255,.10);color:#fff;border:1px solid rgba(255,255,255,.45)}
+.btn-ghost:hover{background:rgba(255,255,255,.22)}
+.stats{width:min(100%,920px);display:grid;grid-template-columns:repeat(4,1fr);gap:18px;
+  margin:64px auto 0;position:relative;z-index:2}
+.stat{display:grid;grid-template-columns:auto 1fr;column-gap:10px;align-items:end;text-align:left}
+.stat-icon{font-family:'Doto',monospace;font-weight:700;font-size:clamp(22px,3vw,33px);line-height:1;color:var(--pink);align-self:center}
+.stat-value{font-family:'Doto',"Noto Sans SC","PingFang SC",sans-serif;font-size:clamp(18px,2.2vw,26px);font-weight:700;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.stat-label{font-family:'Doto',"Noto Sans SC","PingFang SC",sans-serif;font-weight:700;font-size:clamp(11px,1.2vw,12.5px);color:#8e8e8e;margin-top:3px}
+@media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+/* ---------- sections ---------- */
+.section{padding:clamp(88px,10vw,150px) clamp(20px,7vw,120px);scroll-margin-top:70px;position:relative}
+.section-inner{max-width:1180px;margin:0 auto;position:relative;z-index:1}
+.dark{background:#000;color:#fff}
+.light{background:#fff;color:#111}
+.section-kicker{font-family:'Doto',"Noto Sans SC","PingFang SC",sans-serif;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#777;margin-bottom:18px}
+.section-kicker::before{content:"";display:inline-block;width:8px;height:8px;background:var(--pink);margin-right:10px;transform:translateY(-1px)}
+.light .section-kicker{color:#666}
+.section h3,.section h4{font-family:'Doto',"Noto Sans SC","PingFang SC",sans-serif;font-weight:700;}
+.section h2{font-family:'Doto',"Noto Sans SC","PingFang SC",sans-serif;font-weight:800;
+  font-size:clamp(38px,6vw,80px);line-height:1.1;max-width:1050px;margin-bottom:8px}
+.section-intro{margin-top:24px;max-width:800px;color:#929292;font-size:17px;line-height:1.72}
+.light .section-intro{color:#666}
+.rule{height:1px;background:var(--line-dark);margin:44px 0 0}
+.light .rule{background:var(--line-light)}
+.prose p{margin-bottom:16px;font-size:16px;max-width:62em}
+.dark .prose p{color:#c9c9c9}
+.light .prose p{color:#333}
+.prose strong{color:inherit}
+.dark .prose strong{color:#fff}
+.sec-block{margin-top:56px}
+
+/* cards */
+.card-dark{
+  background:linear-gradient(135deg,rgba(255,255,255,.05) 0%,rgba(255,255,255,0) 38%),rgba(10,10,14,.36);
+  border:1px solid rgba(255,255,255,.10);border-radius:var(--radius);padding:34px;color:#fff;
+  box-shadow:inset 0 1px 0 0 rgba(255,255,255,.18),0 10px 40px rgba(0,0,0,.45);
+}
+.card-light{background:#fff;border:1px solid var(--line-light);border-radius:var(--radius);padding:34px;color:#111;
+  box-shadow:0 10px 30px rgba(0,0,0,.06)}
+.card-white-soft{background:#fafafa;border:1px solid var(--line-light);border-radius:var(--radius);padding:34px}
+
+/* theory */
+.theory-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:26px}
+@media(max-width:760px){.theory-grid{grid-template-columns:1fr}}
+.theory-card{padding:32px;border-radius:var(--radius);color:#fff;position:relative;overflow:hidden}
+.theory-card.peak{background:linear-gradient(135deg,var(--pink) 0%,var(--pink-deep) 100%)}
+.theory-card.end{background:linear-gradient(135deg,#161616 0%,#000 100%);border:1px solid rgba(255,255,255,.12)}
+.theory-card h3{font-size:20px;margin-bottom:10px}
+.theory-card p{font-size:14.5px;opacity:.92}
+.curve-card{background:#fff;border-radius:var(--radius);padding:30px;margin-top:26px}
+.curve-card svg{width:100%;height:auto}
+
+/* offline touchpoints —— 全宽头部 + 紧凑图片网格（替代双栏） */
+.touch{margin-bottom:84px}
+.touch:last-child{margin-bottom:10px}
+.touch-head{max-width:940px;margin-bottom:30px}
+.touch-head h3{font-size:clamp(24px,3.2vw,34px);margin-bottom:14px;color:#111}
+.touch-head>p{font-size:15.5px;color:#333;margin-bottom:14px}
+.touch-media-grid{display:grid;gap:18px;margin-bottom:6px}
+.touch-media-grid.mg-duo{grid-template-columns:1fr 1fr}
+.touch-media-grid.mg-trio{grid-template-columns:repeat(3,1fr)}
+.touch-media-grid.mg-pair{grid-template-columns:1fr 1fr}
+.touch-media-grid.mg-single{grid-template-columns:1fr;max-width:100%}
+@media(max-width:640px){.touch-media-grid.mg-duo,.touch-media-grid.mg-trio,.touch-media-grid.mg-pair{grid-template-columns:1fr}}
+.touch-media-grid>div img{width:100%;border-radius:16px;border:1px solid var(--line-light);box-shadow:0 18px 50px -18px rgba(0,0,0,.22)}
+.touch-media-grid .board-cap{margin-top:10px}
+.board{margin-top:18px}
+.board img{border-radius:14px;border:1px solid var(--line-light);width:100%}
+.board-cap{font-family:'Doto',"Noto Sans SC","PingFang SC",sans-serif;font-weight:700;font-size:12.5px;color:#888;margin-top:8px;text-align:center}
+.touch-kicker{font-family:'Doto',"Noto Sans SC",sans-serif;font-size:12px;font-weight:700;color:var(--pink);letter-spacing:.22em;margin-bottom:14px}
+.touch-kicker::before{content:"";display:inline-block;width:7px;height:7px;background:var(--pink);margin-right:8px}
+.tick-list{list-style:none;margin:18px 0;display:grid;gap:12px}
+.tick-list li{display:flex;gap:12px;font-size:15px;align-items:flex-start;background:#fafafa;border:1px solid var(--line-light);
+  border-radius:14px;padding:14px 16px;color:#333}
+.tick-list .tk{flex:0 0 24px;height:24px;border-radius:50%;background:var(--pink-soft);color:var(--pink-deep);
+  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;margin-top:2px}
+.tag-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.tag{font-family:'Doto',"Noto Sans SC",sans-serif;font-size:13px;font-weight:700;padding:8px 16px;border-radius:999px;border:1px solid #ddd;color:#333;background:#fff}
+.tag.hot{background:var(--pink);border-color:var(--pink);color:#fff}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0}
+@media(max-width:640px){.steps{grid-template-columns:1fr}}
+.step{background:#fafafa;border:1px solid var(--line-light);border-radius:16px;padding:20px 18px}
+.step .n{width:34px;height:34px;border-radius:50%;background:var(--pink);color:#fff;font-family:'Doto',sans-serif;font-weight:800;
+  display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:15px}
+.step p{font-size:14px;color:#333}
+
+/* ticket duo */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.duo{grid-template-columns:1fr}}
+.duo img{border-radius:18px;box-shadow:0 18px 50px -18px rgba(0,0,0,.25);width:100%}
+.duo .board-cap{margin-top:8px}
+
+/* merch */
+.merch-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:34px}
+@media(max-width:900px){.merch-grid{grid-template-columns:repeat(2,1fr)}}
+.merch-card{background:#fff;border:1px solid var(--line-light);border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+.merch-card img{width:100%;aspect-ratio:1/1;object-fit:cover;box-shadow:none;border-radius:0}
+.merch-card p{padding:13px 10px;text-align:center;font-size:14px;font-weight:700;color:#111}
+
+/* online flow */
+.gallery{margin-top:44px;display:flex;flex-direction:column;gap:46px}
+.g-head{max-width:660px;margin-bottom:20px}
+.g-head .fn{font-family:'Doto',"Noto Sans SC","PingFang SC",sans-serif;font-size:11px;font-weight:700;color:var(--pink);letter-spacing:.22em;margin-bottom:8px}
+.g-head h3{font-size:20px;margin-bottom:8px;color:#111}
+.g-head p{font-size:14px;color:#555}
+.g-phones{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:18px}
+.g-item{margin:0;text-align:center}
+.phone.xs{width:100%;max-width:168px;margin:0 auto;border-width:7px;border-radius:28px}
+.g-item figcaption{font-family:'Doto',"Noto Sans SC","PingFang SC",sans-serif;font-size:12px;font-weight:700;margin-top:10px;color:#333}
+.phone{margin:26px auto 6px;width:196px;border-radius:34px;border:9px solid #111;overflow:hidden;
+  box-shadow:0 14px 34px -12px rgba(0,0,0,.6);background:#000}
+.phone img{width:100%;aspect-ratio:390/844;object-fit:cover;object-position:top}
+
+
+/* loop */
+.loop{background:#fff;border:1px solid var(--line-light);border-radius:26px;color:#111;padding:46px 40px;margin-top:46px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+.loop h3{font-size:20px;margin-bottom:6px;color:#111}
+.loop .row-label{font-family:'Doto',"Noto Sans SC","PingFang SC",sans-serif;font-size:11px;font-weight:700;letter-spacing:.3em;opacity:.55;margin:26px 0 14px;color:#111}
+.chips{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.chip{font-family:'Doto',"Noto Sans SC","PingFang SC",sans-serif;background:#f4f6f2;border:1px solid var(--line-light);padding:11px 18px;border-radius:999px;
+  font-size:14px;font-weight:700;color:#111}
+.chip.hl{background:var(--pink);border-color:var(--pink);color:#fff}
+.arrow{color:rgba(0,0,0,.35);font-weight:900}
+.bridges{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 6px;padding-top:26px;border-top:1px dashed rgba(0,0,0,.2)}
+.bridge{flex:1;min-width:200px;background:#f7f7f7;border-radius:16px;padding:18px}
+.bridge b{display:block;color:var(--pink-deep);margin-bottom:6px;font-size:14px}
+.bridge span{font-size:13.5px;color:#555}
+.loop-note{margin-top:26px;font-size:15px;color:#555;max-width:60em}
+
+/* design language */
+.dl-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:46px}
+@media(max-width:760px){.dl-grid{grid-template-columns:1fr}}
+.swatches{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+@media(max-width:560px){.swatches{grid-template-columns:repeat(3,1fr)}}
+.sw{border-radius:14px;overflow:hidden;border:1px solid var(--line-light)}
+.sw .c{height:74px}
+.sw .t{font-size:11.5px;padding:8px 10px;background:#f7f7f7;color:#555}
+.sw .t b{display:block;font-size:12px;color:#111}
+.type-card h4{font-size:15px;margin-bottom:10px;color:#111}
+.type-demo-zh{font-size:22px;font-weight:700;margin-bottom:6px;color:#111}
+.type-demo-en{font-size:20px;font-weight:600;letter-spacing:-.01em;color:#111}
+html[lang="en"] .type-demo-zh{display:none}
+.dl-note{font-size:13.5px;color:#666;margin-top:12px}
+
+/* footer */
+.site-footer{font-family:'Doto',"Noto Sans SC","PingFang SC",sans-serif;font-weight:700;
+  padding:26px clamp(20px,7vw,120px);background:#000;color:#666;
+  display:flex;justify-content:space-between;gap:20px;align-items:center;
+  font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  border-top:1px solid var(--line-dark);
+}
+.site-footer a{color:#999}
+.site-footer a:hover{color:#fff}
+
+/* back to top */
+.back-to-top{
+  position:fixed;right:22px;bottom:22px;z-index:90;width:46px;height:46px;border-radius:50%;
+  background:#fff;color:#000;border:1px solid rgba(0,0,0,.1);box-shadow:0 10px 30px rgba(0,0,0,.25);
+  font-size:16px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;
+}
+.back-to-top.show{opacity:1;pointer-events:auto}
+.back-to-top:hover{transform:translateY(-2px)}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(28px);filter:blur(6px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1),filter .8s ease}
+.rv.on{opacity:1;transform:none;filter:blur(0)}
+
+/* mobile */
+/* mobile ââ ä¸¥æ ¼éµå¾ª Dunhuang é»è¾ï¼æ æ±å ¡èåï¼è¶åæ¨ªæ» */
+@media(max-width:900px){
+  .site-header{padding-top:calc(70px + env(safe-area-inset-top))}
+  .header-inner{width:100%;min-width:0;gap:8px}
+  .brand{display:none}
+  .nav-pill{min-width:0;flex:1;justify-content:flex-start;padding:4px 8px}
+  .nav-pill .nav-link{padding:10px 9px 13px}
+  .lang-toggle{flex-shrink:0}
+  .site-footer{flex-direction:column;gap:8px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- 导航栏：严格遵循 Dunhuang 项目页逻辑 -->
+<header class="site-header" id="top">
+  <div class="header-inner">
+    <a class="brand" href="#overview"><span class="dot" aria-hidden="true"></span><span data-zh="九里" data-en="JIULI">九里</span></a>
+    <nav class="nav-pill" aria-label="Primary">
+      <a class="nav-link active" href="#overview" data-nav="overview"><span data-zh="概览" data-en="Overview">概览</span></a>
+      <a class="nav-link" href="#background" data-nav="background"><span data-zh="背景" data-en="Background">背景</span></a>
+      <a class="nav-link" href="#theory" data-nav="theory"><span data-zh="理论" data-en="Theory">理论</span></a>
+      <a class="nav-link" href="#offline" data-nav="offline"><span data-zh="线下触点" data-en="Offline">线下触点</span></a>
+      <a class="nav-link" href="#online" data-nav="online"><span data-zh="线上系统" data-en="Online">线上系统</span></a>
+      <a class="nav-link" href="#loop" data-nav="loop"><span data-zh="闭环" data-en="Loop">闭环</span></a>
+      <a class="nav-link" href="#designlang" data-nav="designlang"><span data-zh="设计语言" data-en="Design">设计语言</span></a>
+    </nav>
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button type="button" data-lang="en">EN</button><button type="button" data-lang="zh" class="active">中</button>
+    </div>
+  </div>
+</header>
+
+<a class="fab fab-home" href="https://cooleli.github.io/CV-project/" target="_blank" rel="noopener">
+  <span data-zh="返回首页" data-en="Back home">返回首页</span>
+</a>
+
+<!-- 00 概览 / HERO -->
+<section class="hero" id="overview">
+  <div class="hero-bg"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/hero-dusk.webp" alt="九里粉黛园黄昏"></div>
+  <div class="hero-inner">
+    <span class="eyebrow" data-zh="2022 课程项目 · 文旅服务设计" data-en="2022 Course Project · Tourism Service Design">2022 课程项目 · 文旅服务设计</span>
+    <h1 data-zh="九里" data-en="JIULI">九里</h1>
+    <p class="sub" data-zh="以峰终定律为框架的线上线下融合景区服务设计" data-en="An O2O scenic service design framed by the Peak-End Rule">以峰终定律为框架的线上线下融合景区服务设计</p>
+    <p class="desc" data-zh="从一张门票开始，到一次盖章兑换结束——九里把线下触点与线上导览编织成一段会被记住的旅程。" data-en="From a ticket to a stamp redeemed — Jiuli weaves offline touchpoints and an online guide into a journey worth remembering.">从一张门票开始，到一次盖章兑换结束——九里把线下触点与线上导览编织成一段会被记住的旅程。</p>
+    <div class="hero-cta">
+      <a class="btn btn-white" href="#offline" data-zh="查看线下触点 →" data-en="Explore Offline Touchpoints →">查看线下触点 →</a>
+      <a class="btn btn-ghost" href="#online" data-zh="查看线上系统" data-en="Explore the Online System">查看线上系统</a>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-icon">~</div><div class="stat-copy"><div class="stat-value"><span class="counter" data-target="5">0</span></div><div class="stat-label" data-zh="沸井，各有各的味道" data-en="Boiling wells, each with its own taste">沸井，各有各的味道</div></div></div>
+    <div class="stat"><div class="stat-icon">*</div><div class="stat-copy"><div class="stat-value"><span class="counter" data-target="4">0</span></div><div class="stat-label" data-zh="线下交互触点" data-en="Offline touchpoints">线下交互触点</div></div></div>
+    <div class="stat"><div class="stat-icon">#</div><div class="stat-copy"><div class="stat-value"><span class="counter" data-target="6">0</span></div><div class="stat-label" data-zh="导览 App 界面" data-en="Guide app screens">导览 App 界面</div></div></div>
+    <div class="stat"><div class="stat-icon">&lt;</div><div class="stat-copy"><div class="stat-value"><span class="counter" data-target="2022">0</span></div><div class="stat-label" data-zh="课程项目年份" data-en="Course project year">课程项目年份</div></div></div>
+  </div>
+</section>
+
+<!-- 01 背景 -->
+<section class="section light" id="background">
+  <div class="section-inner">
+    <div class="section-kicker rv" data-zh="01 · 项目背景" data-en="01 · Background">01 · 项目背景</div>
+    <h2 class="rv" data-zh="项目背景" data-en="Background">项目背景</h2>
+    <div class="prose rv sec-block">
+      <p data-zh="「九里」是一套为<strong>九里村</strong>设计的文旅服务方案（2022 年课程项目）。九里村拥有<strong>五口味道各异的沸井</strong>、季子挂剑的人文传说、粉黛园花海与村中的疗养院——资源丰富，但游客的旅程记忆点薄弱。" data-en="&quot;Jiuli&quot; is a cultural-tourism service concept designed for <strong>Jiuli Village</strong> (2022 course project). The village holds <strong>five boiling wells, each with its own taste</strong>, the legend of Jizi hanging his sword, a pink muhly grass sea, and a wellness retreat — rich resources, yet visitors left with few lasting memories.">「九里」是一套为<strong>九里村</strong>设计的文旅服务方案（2022 年课程项目）。九里村拥有<strong>五口味道各异的沸井</strong>、季子挂剑的人文传说、粉黛园花海与村中的疗养院——资源丰富，但游客的旅程记忆点薄弱。</p>
+      <p data-zh="前期调研发现了两个关键痛点：游客想品尝井水，却<strong>因没有盛水用具而放弃</strong>；整段游览缺少高光时刻，走马观花之后难以形成记忆。" data-en="Early research surfaced two key pain points: visitors wanted to taste the well water but <strong>gave up for lack of a vessel</strong>; the tour lacked highlight moments, leaving little to remember.">前期调研发现了两个关键痛点：游客想品尝井水，却<strong>因没有盛水用具而放弃</strong>；整段游览缺少高光时刻，走马观花之后难以形成记忆。</p>
+      <p data-zh="方案以<strong>峰终定律</strong>为理论框架：人们对一段体验的记忆，主要由<strong>峰值体验</strong>与<strong>结束时的体验</strong>决定。设计围绕「制造峰值、善待终值」展开，并以一套线上导览系统承接全程，形成线下线上的完整闭环。" data-en="The concept is framed by the <strong>Peak-End Rule</strong>: what people remember of an experience is shaped mostly by its <strong>peak</strong> and its <strong>ending</strong>. The design creates peaks and honors the ending, carried throughout by an online guide system — a complete offline-online loop.">方案以<strong>峰终定律</strong>为理论框架：人们对一段体验的记忆，主要由<strong>峰值体验</strong>与<strong>结束时的体验</strong>决定。设计围绕「制造峰值、善待终值」展开，并以一套线上导览系统承接全程，形成线下线上的完整闭环。</p>
+    </div>
+    <div class="rule rv"></div>
+  </div>
+</section>
+
+<!-- 02 理论 -->
+<section class="section dark" id="theory">
+  <div class="section-inner">
+    <div class="section-kicker rv" data-zh="02 · 核心理论" data-en="02 · Core Theory">02 · 核心理论</div>
+    <h2 class="rv" data-zh="峰终定律" data-en="The Peak-End Rule">峰终定律</h2>
+    <p class="section-intro rv" data-zh="体验的峰值与终值，决定了整段经历的记忆强度。九里据此布设了两类触点。" data-en="The peak and the end of an experience decide how strongly the whole of it is remembered. Jiuli places two kinds of touchpoints accordingly.">体验的峰值与终值，决定了整段经历的记忆强度。九里据此布设了两类触点。</p>
+    <div class="curve-card rv">
+      <svg viewBox="0 0 620 300" role="img" aria-label="peak-end curve">
+        <line x1="50" y1="250" x2="590" y2="250" stroke="#dde5df" stroke-width="2"/>
+        <line x1="50" y1="250" x2="50" y2="30" stroke="#dde5df" stroke-width="2"/>
+        <text x="44" y="30" font-size="12" fill="#63716b" text-anchor="end" data-zh="体验" data-en="Experience">体验</text>
+        <text x="592" y="268" font-size="12" fill="#63716b" text-anchor="end" data-zh="旅程时间" data-en="Journey time">旅程时间</text>
+        <path d="M50,230 C120,225 150,215 190,180 C230,145 250,150 290,120 C330,90 350,60 390,62 C430,64 440,110 480,130 C520,150 540,140 585,150"
+          fill="none" stroke="#f03d6e" stroke-width="4" stroke-linecap="round"/>
+        <line x1="390" y1="62" x2="390" y2="250" stroke="#f03d6e" stroke-dasharray="6 6" stroke-width="2"/>
+        <circle cx="390" cy="62" r="8" fill="#f03d6e" stroke="#fff" stroke-width="3"/>
+        <text x="390" y="42" font-size="14" font-weight="800" fill="#f03d6e" text-anchor="middle" data-zh="峰值体验" data-en="Peak">峰值体验</text>
+        <line x1="585" y1="150" x2="585" y2="250" stroke="#111111" stroke-dasharray="6 6" stroke-width="2"/>
+        <circle cx="585" cy="150" r="8" fill="#111111" stroke="#fff" stroke-width="3"/>
+        <text x="560" y="132" font-size="14" font-weight="800" fill="#111111" text-anchor="end" data-zh="终点体验" data-en="Ending">终点体验</text>
+      </svg>
+    </div>
+    <div class="theory-grid">
+      <div class="theory-card peak rv">
+        <h3 data-zh="峰值触点" data-en="Peak touchpoints">峰值触点</h3>
+        <p data-zh="优化游览过程中的交互触点，提高用户的峰值体验：会变魔术的门票、疗养院门口的镜子、到点解锁的线下任务。" data-en="Optimize interaction touchpoints mid-journey to lift peak experience: a magical ticket, a mirror at the retreat entrance, location-unlocked onsite tasks.">优化游览过程中的交互触点，提高用户的峰值体验：会变魔术的门票、疗养院门口的镜子、到点解锁的线下任务。</p>
+      </div>
+      <div class="theory-card end rv">
+        <h3 data-zh="终值触点" data-en="Ending touchpoints">终值触点</h3>
+        <p data-zh="在旅途的最后为用户兑换纪念品：重新唤醒对旅程的记忆，带得走的纪念品让服务体验在回家后继续延长——睹物思景。" data-en="Redeem souvenirs at journey's end: rekindle the memory of the trip, and let take-home keepsakes extend the service experience — out of sight, never out of mind.">在旅途的最后为用户兑换纪念品：重新唤醒对旅程的记忆，带得走的纪念品让服务体验在回家后继续延长——睹物思景。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 线下触点 -->
+<section class="section light" id="offline">
+  <div class="section-inner">
+    <div class="section-kicker rv" data-zh="03 · 线下交互触点" data-en="03 · Offline Touchpoints">03 · 线下交互触点</div>
+    <h2 class="rv" data-zh="线下交互触点" data-en="Offline Touchpoints">线下交互触点</h2>
+    <p class="section-intro rv" data-zh="四组实体触点，把峰终定律落到可触摸的细节上。" data-en="Four physical touchpoints that make the Peak-End Rule tangible.">四组实体触点，把峰终定律落到可触摸的细节上。</p>
+
+    <!-- 3.1 门票设计 -->
+    <div class="touch rv sec-block">
+      <div class="touch-head">
+
+          <p class="touch-kicker">OFFLINE 01</p>
+          <h3 data-zh="门票设计：对应沸泉的一张票" data-en="Ticket Design: A Ticket for the Boiling Wells">门票设计：对应沸泉的一张票</h3>
+          <p data-zh="门票不再只是一张凭证，而是一件可玩、可纪念、会讲故事的介质。这张门票对应九里村最具代表性的<strong>沸泉景点</strong>：游客购票时获得一张<strong>空白票根</strong>，票根上的文字提示——需要用水淋湿，内容才会显现。" data-en="The ticket is no longer just a credential — it is a playable, collectible, storytelling medium. This ticket belongs to the village's signature <strong>Boiling Wells</strong>: visitors receive a <strong>blank stub</strong> whose printed hint reads — wet it with water to reveal its content.">门票不再只是一张凭证，而是一件可玩、可纪念、会讲故事的介质。这张门票对应九里村最具代表性的<strong>沸泉景点</strong>：游客购票时获得一张<strong>空白票根</strong>，票根上的文字提示——需要用水淋湿，内容才会显现。</p>
+          <ul class="tick-list">
+            <li><span class="tk">✓</span><span data-zh="<strong>水显文字：</strong>五口井水酸碱度不同，显现的色彩也不同——把「沸井有五种味道」变成可亲手验证的惊喜。" data-en="<strong>Water-reveal print:</strong> the five wells differ in pH, so each reveals a different color — turning &quot;five tastes&quot; into a surprise visitors verify with their own hands."><strong>水显文字：</strong>五口井水酸碱度不同，显现的色彩也不同——把「沸井有五种味道」变成可亲手验证的惊喜。</span></li>
+            <li><span class="tk">✓</span><span data-zh="<strong>汲泉品茗：</strong>凭票根在必游景点用附带的小杯汲泉饮水，解决调研中「想品尝井水却无盛水用具」的痛点。" data-en="<strong>Taste the wells:</strong> use the stub and its tiny cup to draw and taste well water at key spots — solving the &quot;wanted to taste, had no vessel&quot; pain point."><strong>汲泉品茗：</strong>凭票根在必游景点用附带的小杯汲泉饮水，解决调研中「想品尝井水却无盛水用具」的痛点。</span></li>
+            <li><span class="tk">✓</span><span data-zh="<strong>一物多用：</strong>票根附带粉色滤镜薄膜，可罩在手机摄像头上拍摄；游览结束后可作纪念小挂饰，或兑换纪念品。" data-en="<strong>One object, many uses:</strong> the stub carries a pink filter film for phone photography; afterwards it becomes a keepsake pendant or can be redeemed for souvenirs."><strong>一物多用：</strong>票根附带粉色滤镜薄膜，可罩在手机摄像头上拍摄；游览结束后可作纪念小挂饰，或兑换纪念品。</span></li>
+            <li><span class="tk">✓</span><span data-zh="<strong>背面集章：</strong>票背为集章面，六个盖章位以虚线游览路线串联，在不同景点盖章，与「九里假日记」集章玩法呼应。" data-en="<strong>Stamp side:</strong> the back is a stamp surface — six stamp spots linked by a dotted route, stamped at each attraction, echoing the &quot;Jiuli Holiday Diary&quot; collecting ritual."><strong>背面集章：</strong>票背为集章面，六个盖章位以虚线游览路线串联，在不同景点盖章，与「九里假日记」集章玩法呼应。</span></li>
+            <li><span class="tk">✓</span><span data-zh="<strong>沸泉小挂件：</strong>门票一角系着一枚迷你古井挂件，红白配色呼应「九里阳光」视觉，可取下随身携带。" data-en="<strong>Boiling-well charm:</strong> a mini well-shaped pendant hangs from the ticket corner in the red-and-white identity — detachable and ready to carry home."><strong>沸泉小挂件：</strong>门票一角系着一枚迷你古井挂件，红白配色呼应「九里阳光」视觉，可取下随身携带。</span></li>
+          </ul>
+          <div class="tag-row">
+            <span class="tag hot" data-zh="可玩性" data-en="Playful">可玩性</span>
+            <span class="tag" data-zh="纪念性" data-en="Collectible">纪念性</span>
+            <span class="tag" data-zh="说明性" data-en="Informative">说明性</span>
+            <span class="tag" data-zh="功能性" data-en="Functional">功能性</span>
+          </div>
+        </div>
+      <div class="touch-media-grid mg-duo">
+          <div><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/ticket169-before.webp" alt="门票正面淋水前">
+            <p class="board-cap" data-zh="正面 · 淋水前" data-en="Front · Before watering">正面 · 淋水前</p></div>
+          <div><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/ticket169-after.webp" alt="门票正面淋水后">
+            <p class="board-cap" data-zh="正面 · 淋水后（色彩显现）" data-en="Front · After watering (colors revealed)">正面 · 淋水后（色彩显现）</p></div>
+        </div>
+      <div class="touch-media-grid mg-single">
+        <div><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/ticket-flow.webp" alt="门票使用流程">
+          <p class="board-cap" data-zh="使用流程：空白票根 → 淋水 → 显现信息" data-en="How it works: blank stub → pour water → information revealed">使用流程：空白票根 → 淋水 → 显现信息</p></div>
+      </div>
+    </div>
+
+    <!-- 3.2 滤镜玩法 -->
+    <div class="touch rv sec-block">
+      <div class="touch-head">
+        <p class="touch-kicker">OFFLINE 02</p>
+        <h3 data-zh="滤镜玩法：把游客变成传播者" data-en="The Filter Ritual: Turning Visitors into Amplifiers">滤镜玩法：把游客变成传播者</h3>
+        <p data-zh="一次低成本的仪式感：门票里藏着一片粉色塑料薄片，它是一枚实体「滤镜」。游客举起薄片对准摄像头，就能拍出自带「九里粉」色调的照片，并带话题上传——把游客变成内容的生产者与传播者。" data-en="A low-cost ritual: hidden in the ticket is a pink plastic film — a physical &quot;filter&quot;. Hold it over the camera and every shot carries the signature Jiuli Pink tone, ready to post with the hashtag — turning visitors into creators and amplifiers.">一次低成本的仪式感：门票里藏着一片粉色塑料薄片，它是一枚实体「滤镜」。游客举起薄片对准摄像头，就能拍出自带「九里粉」色调的照片，并带话题上传——把游客变成内容的生产者与传播者。</p>
+        <div class="steps">
+          <div class="step"><div class="n">1</div><p data-zh="取出门票中附带的粉色塑料薄片" data-en="Take the pink film from the ticket">取出门票中附带的粉色塑料薄片</p></div>
+          <div class="step"><div class="n">2</div><p data-zh="将薄片对准手机摄像头" data-en="Hold the film over the phone camera">将薄片对准手机摄像头</p></div>
+          <div class="step"><div class="n">3</div><p data-zh="拍出「九里粉」滤镜照片并分享" data-en="Shoot in Jiuli Pink and share">拍出「九里粉」滤镜照片并分享</p></div>
+        </div>
+      </div>
+      <div class="touch-media-grid mg-single">
+        <div><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/ticket-usage.webp" alt="门票滤镜用法"></div>
+      </div>
+    </div>
+
+    <!-- 3.3 疗养院镜子 -->
+    <div class="touch rv sec-block">
+      <div class="touch-head">
+        <p class="touch-kicker">OFFLINE 03</p>
+        <h3 data-zh="峰值触点：疗养院门口的一面镜子" data-en="Peak Touchpoint: A Mirror at the Retreat">峰值触点：疗养院门口的一面镜子</h3>
+        <p data-zh="九里村中的疗养院提供全身心的美容理疗服务。方案在<strong>疗养院门口放置一面镜子</strong>，让用户直观对比疗养前后的变化——把「变好」这件事变成看得见的峰值。" data-en="The village wellness retreat offers beauty and therapy treatments for body and mind. The concept places <strong>a mirror at its entrance</strong>, letting guests compare before and after — turning &quot;feeling better&quot; into a visible peak.">九里村中的疗养院提供全身心的美容理疗服务。方案在<strong>疗养院门口放置一面镜子</strong>，让用户直观对比疗养前后的变化——把「变好」这件事变成看得见的峰值。</p>
+        <p data-zh="依据峰终定律，峰值体验决定了用户对整段旅程的记忆程度。这面镜子加深了疗养效果在用户心中的印象，也成为吸引下次光顾的理由。" data-en="Per the Peak-End Rule, peak experience decides how strongly the whole journey is remembered. The mirror deepens the impression of the treatment — and becomes a reason to return.">依据峰终定律，峰值体验决定了用户对整段旅程的记忆程度。这面镜子加深了疗养效果在用户心中的印象，也成为吸引下次光顾的理由。</p>
+        <div class="steps">
+          <div class="step"><div class="n">1</div><p data-zh="入门前照镜子，看到自己当下的精神状态" data-en="Look in the mirror before entering — see your current state">入门前照镜子，看到自己当下的精神状态</p></div>
+          <div class="step"><div class="n">2</div><p data-zh="享受 SPA 理疗，身心放松" data-en="Enjoy the spa treatment, body and mind at ease">享受 SPA 理疗，身心放松</p></div>
+          <div class="step"><div class="n">3</div><p data-zh="出门再照镜子，直观对比前后变化" data-en="Look again on the way out — the change is visible">出门再照镜子，直观对比前后变化</p></div>
+        </div>
+        <div class="tag-row">
+          <span class="tag hot" data-zh="峰值体验" data-en="Peak experience">峰值体验</span>
+          <span class="tag" data-zh="疗养前 / 疗养后对比" data-en="Before / after contrast">疗养前 / 疗养后对比</span>
+        </div>
+      </div>
+      <div class="touch-media-grid mg-single">
+        <div><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/mirror-flow.webp" alt="疗养院镜子流程"></div>
+      </div>
+    </div>
+
+    <!-- 3.4 盖章换礼 -->
+    <div class="touch rv sec-block">
+      <div class="touch-head">
+        <p class="touch-kicker">OFFLINE 04</p>
+        <h3 data-zh="终值触点：集章换礼" data-en="Ending Touchpoint: Stamps for Gifts">终值触点：集章换礼</h3>
+        <p data-zh="「<strong>九里假日记</strong>」集章卡陪伴全程：在不同景点盖章，旅程结束后凭印章兑换小礼品。终点的仪式感决定了整段旅程的记忆浓度。" data-en="The &quot;Jiuli Holiday Diary&quot; stamp card travels with the visitor: collect stamps at each spot, redeem gifts at journey's end. A ritual ending concentrates the memory of the whole trip.">「<strong>九里假日记</strong>」集章卡陪伴全程：在不同景点盖章，旅程结束后凭印章兑换小礼品。终点的仪式感决定了整段旅程的记忆浓度。</p>
+        <p data-zh="配套的「九里阳光」文创体系延续红白视觉：帆布包、渔夫帽、钥匙扣、搪瓷杯与假日记手账——带得走的纪念品，让服务体验在回家后继续延长。" data-en="The matching &quot;Jiuli Sunshine&quot; merchandise line continues the red-and-white identity: tote bag, bucket hat, keychain, enamel mug, and diary notebook — take-home keepsakes that extend the service experience beyond the visit.">配套的「九里阳光」文创体系延续红白视觉：帆布包、渔夫帽、钥匙扣、搪瓷杯与假日记手账——带得走的纪念品，让服务体验在回家后继续延长。</p>
+        <p data-zh="文创礼品围绕<strong>「九里村」品牌字样、沸泉古井纹样与云纹元素</strong>展开，红白配色贯穿始终：" data-en="The merchandise line is built around the <strong>&quot;Jiuli Village&quot; wordmark, the boiling-well motif and cloud patterns</strong>, in the signature red-and-white palette:">文创礼品围绕<strong>「九里村」品牌字样、沸泉古井纹样与云纹元素</strong>展开，红白配色贯穿始终：</p>
+        <div class="tag-row">
+          <span class="tag" data-zh="帆布包" data-en="Tote bag">帆布包</span>
+          <span class="tag" data-zh="渔夫帽" data-en="Bucket hat">渔夫帽</span>
+          <span class="tag" data-zh="钥匙扣" data-en="Keychain">钥匙扣</span>
+          <span class="tag" data-zh="搪瓷杯" data-en="Enamel mug">搪瓷杯</span>
+          <span class="tag" data-zh="假日记手账" data-en="Diary notebook">假日记手账</span>
+          <span class="tag" data-zh="明信片" data-en="Postcards">明信片</span>
+        </div>
+      </div>
+      <div class="touch-media-grid mg-single">
+        <div><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/stamp-gifts.webp" alt="集章兑换文创"></div>
+      </div>
+      <div class="merch-grid">
+        <div class="merch-card rv"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/merch-tote.webp" alt="帆布袋"><p data-zh="帆布袋" data-en="Canvas Tote">帆布袋</p></div>
+        <div class="merch-card rv"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/merch-mug.webp" alt="搪瓷杯"><p data-zh="搪瓷杯" data-en="Enamel Mug">搪瓷杯</p></div>
+        <div class="merch-card rv"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/merch-notebook.webp" alt="布面手账"><p data-zh="布面手账" data-en="Fabric Notebook">布面手账</p></div>
+        <div class="merch-card rv"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/merch-postcards.webp" alt="明信片套装"><p data-zh="明信片套装" data-en="Postcard Set">明信片套装</p></div>
+      </div>
+    </div>
+
+    <div class="rule rv"></div>
+  </div>
+</section>
+
+<!-- 04 线上系统 -->
+<section class="section light" id="online">
+  <div class="section-inner">
+    <div class="section-kicker rv" data-zh="04 · 线上导览系统" data-en="04 · Online Guide System">04 · 线上导览系统</div>
+    <h2 class="rv" data-zh="线上导览系统" data-en="The Online Guide System">线上导览系统</h2>
+    <p class="section-intro rv" data-zh="与线下触点配套的导览 App 界面设计：21 张界面，从激活身份到兑换奖励，一部手机承接全部旅程。" data-en="The companion guide app (UI design) to the offline touchpoints: 21 screens, one phone carries the entire journey, from identity activation to reward redemption.">与线下触点配套的导览 App 界面设计：21 张界面，从激活身份到兑换奖励，一部手机承接全部旅程。</p>
+    <div class="gallery">
+      <div class="g-stage rv">
+        <div class="g-head"><p class="fn">01 · IDENTITY</p>
+          <h3 data-zh="入园欢迎" data-en="Welcome">入园欢迎</h3>
+          <p data-zh="绑定今日门票（纸质票与电子票均可识别），选择游客类型；仅用于本次游览服务，离园后一键清除身份信息。" data-en="Bind today's ticket (paper or e-ticket), pick a visitor type; data serves this visit only and is wiped on exit.">绑定今日门票（纸质票与电子票均可识别），选择游客类型；仅用于本次游览服务，离园后一键清除身份信息。</p></div>
+        <div class="g-phones">
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-welcome.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-welcome-en.webp" alt="激活身份" data-alt-zh="激活身份" data-alt-en="Activate identity" loading="lazy"></div><figcaption data-zh="身份激活" data-en="Identity">身份激活</figcaption></figure>
+        </div>
+      </div>
+      <div class="g-stage rv">
+        <div class="g-head"><p class="fn">02 · PLANNING</p>
+          <h3 data-zh="智能规划" data-en="Planning">智能规划</h3>
+          <p data-zh="三步个性化（兴趣 / 年龄 / 游览目的）叠加实时客流地图，生成「古吴寻迹」路线：92% 偏好匹配，3 小时 20 分，6.4 公里。" data-en="Three-step personalization (interests, age, purpose) plus a live crowd map generates the “Ancient Wu Trail”: 92% match, 3h 20m, 6.4 km.">三步个性化（兴趣 / 年龄 / 游览目的）叠加实时客流地图，生成「古吴寻迹」路线：92% 偏好匹配，3 小时 20 分，6.4 公里。</p></div>
+        <div class="g-phones">
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-interest.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-interest-en.webp" alt="兴趣偏好" data-alt-zh="兴趣偏好" data-alt-en="Interests" loading="lazy"></div><figcaption data-zh="兴趣偏好" data-en="Interests">兴趣偏好</figcaption></figure>
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-age.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-age-en.webp" alt="年龄偏好" data-alt-zh="年龄偏好" data-alt-en="Age" loading="lazy"></div><figcaption data-zh="年龄偏好" data-en="Age">年龄偏好</figcaption></figure>
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-purpose.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-purpose-en.webp" alt="游览目的" data-alt-zh="游览目的" data-alt-en="Trip purpose" loading="lazy"></div><figcaption data-zh="游览目的" data-en="Purpose">游览目的</figcaption></figure>
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-route.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-route-en.webp" alt="智能路线" data-alt-zh="智能路线" data-alt-en="Smart route" loading="lazy"></div><figcaption data-zh="智能路线概览" data-en="Route overview">智能路线概览</figcaption></figure>
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-custom-route.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-custom-route-en.webp" alt="定制路线" data-alt-zh="定制路线" data-alt-en="Custom route" loading="lazy"></div><figcaption data-zh="定制路线" data-en="Custom route">定制路线</figcaption></figure>
+        </div>
+      </div>
+      <div class="g-stage rv">
+        <div class="g-head"><p class="fn">03 · NAVIGATION</p>
+          <h3 data-zh="实景导航" data-en="Navigation">实景导航</h3>
+          <p data-zh="实时导航叠加景点详情：距离、客流、黄金时段一目了然，并推荐「现在适合去粉黛园」。" data-en="Live navigation with spot details: distance, crowd levels and golden hour at a glance — including “now is the time for the muhly field” tips.">实时导航叠加景点详情：距离、客流、黄金时段一目了然，并推荐「现在适合去粉黛园」。</p></div>
+        <div class="g-phones">
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-map.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-map-en.webp" alt="实景导航" data-alt-zh="实景导航" data-alt-en="Live navigation" loading="lazy"></div><figcaption data-zh="景区地图" data-en="Park map">景区地图</figcaption></figure>
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-crowd.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-crowd-en.webp" alt="实时客流" data-alt-zh="实时客流" data-alt-en="Live crowds" loading="lazy"></div><figcaption data-zh="实时客流" data-en="Live crowds">实时客流</figcaption></figure>
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-tools.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-tools-en.webp" alt="游览工具" data-alt-zh="游览工具" data-alt-en="Visit tools" loading="lazy"></div><figcaption data-zh="游览工具" data-en="Visit tools">游览工具</figcaption></figure>
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-nav-live.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-nav-live-en.webp" alt="实时导航" data-alt-zh="实时导航" data-alt-en="Live navigation" loading="lazy"></div><figcaption data-zh="实时导航" data-en="Live navigation">实时导航</figcaption></figure>
+        </div>
+      </div>
+      <div class="g-stage rv">
+        <div class="g-head"><p class="fn">04 · CHECK-IN TASKS</p>
+          <h3 data-zh="到点体验" data-en="Experience">到点体验</h3>
+          <p data-zh="GPS 到点解锁线下任务：在季子庙找到挂剑纹样，扫码听完 45 秒故事，获得季子庙电子印章。" data-en="GPS unlocks onsite tasks: find the sword-hanging carving at Jizi Temple, scan to hear a 45-second story, earn a digital stamp.">GPS 到点解锁线下任务：在季子庙找到挂剑纹样，扫码听完 45 秒故事，获得季子庙电子印章。</p></div>
+        <div class="g-phones">
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-task.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-task-en.webp" alt="到点任务" data-alt-zh="到点任务" data-alt-en="Check-in task" loading="lazy"></div><figcaption data-zh="到点任务" data-en="Check-in task">到点任务</figcaption></figure>
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-wells.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-wells-en.webp" alt="沸井详情" data-alt-zh="沸井详情" data-alt-en="Wells detail" loading="lazy"></div><figcaption data-zh="沸井详情" data-en="Wells detail">沸井详情</figcaption></figure>
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-pinkgarden.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-pinkgarden-en.webp" alt="粉黛园详情" data-alt-zh="粉黛园详情" data-alt-en="Muhly Field detail" loading="lazy"></div><figcaption data-zh="粉黛园详情" data-en="Muhly Field">粉黛园详情</figcaption></figure>
+        </div>
+      </div>
+      <div class="g-stage rv">
+        <div class="g-head"><p class="fn">05 · CULTURE PLAY</p>
+          <h3 data-zh="文化玩法" data-en="Culture play">文化玩法</h3>
+          <p data-zh="历史循迹时间线、九里百科 3 分钟读懂、季子百问答题赚文脉值、相机滤镜留念——把文化变成可玩的轻量互动。" data-en="A history timeline, 3-minute encyclopedia entries, the Jizi Quiz to earn culture points, camera filters for keepsakes — culture as light, playable interaction.">历史循迹时间线、九里百科 3 分钟读懂、季子百问答题赚文脉值、相机滤镜留念——把文化变成可玩的轻量互动。</p></div>
+        <div class="g-phones">
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-culture.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-culture-en.webp" alt="九里文化" data-alt-zh="九里文化" data-alt-en="Jiuli Culture" loading="lazy"></div><figcaption data-zh="九里文化" data-en="Jiuli Culture">九里文化</figcaption></figure>
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-history-trail.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-history-trail-en.webp" alt="历史循迹" data-alt-zh="历史循迹" data-alt-en="History trail" loading="lazy"></div><figcaption data-zh="历史循迹" data-en="History trail">历史循迹</figcaption></figure>
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-quiz.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-quiz-en.webp" alt="季子百问" data-alt-zh="季子百问" data-alt-en="Jizi quiz" loading="lazy"></div><figcaption data-zh="季子百问" data-en="Jizi Quiz">季子百问</figcaption></figure>
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-filter.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-filter-en.webp" alt="相机滤镜" data-alt-zh="相机滤镜" data-alt-en="Camera filters" loading="lazy"></div><figcaption data-zh="相机滤镜" data-en="Filters">相机滤镜</figcaption></figure>
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-photo.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-photo-en.webp" alt="相机留念" data-alt-zh="相机留念" data-alt-en="Photo keepsake" loading="lazy"></div><figcaption data-zh="相机留念" data-en="Keepsake">相机留念</figcaption></figure>
+        </div>
+      </div>
+      <div class="g-stage rv">
+        <div class="g-head"><p class="fn">06 · PASSPORT & REWARDS</p>
+          <h3 data-zh="护照与奖励" data-en="Passport & rewards">护照与奖励</h3>
+          <p data-zh="文化护照沉淀印章、文脉值与足迹；凭文脉值在出口游客中心核销，兑换明信片、品茗杯等实体奖励。" data-en="The culture passport keeps stamps, points and footprints; redeem points for physical rewards — postcards, tea cups — at the exit visitor center.">文化护照沉淀印章、文脉值与足迹；凭文脉值在出口游客中心核销，兑换明信片、品茗杯等实体奖励。</p></div>
+        <div class="g-phones">
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-complete.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-complete-en.webp" alt="路线完成" data-alt-zh="路线完成" data-alt-en="Route complete" loading="lazy"></div><figcaption data-zh="路线完成" data-en="Route complete">路线完成</figcaption></figure>
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-passport.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-passport-en.webp" alt="文化护照" data-alt-zh="文化护照" data-alt-en="Culture passport" loading="lazy"></div><figcaption data-zh="文化护照" data-en="Culture passport">文化护照</figcaption></figure>
+          <figure class="g-item"><div class="phone xs"><img src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-rewards.webp" data-en-src="https://cdn.jsdelivr.net/gh/CoolEli/Portfolio-page@main/APP%20Interaction%20Design%20project/screens/s-rewards-en.webp" alt="奖励兑换" data-alt-zh="奖励兑换" data-alt-en="Rewards" loading="lazy"></div><figcaption data-zh="奖励兑换" data-en="Rewards">奖励兑换</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 闭环 -->
+<section class="section dark" id="loop">
+  <div class="section-inner">
+    <div class="section-kicker rv" data-zh="05 · 线上下线闭环" data-en="05 · The O2O Loop">05 · 线上下线闭环</div>
+    <h2 class="rv" data-zh="线上下线闭环" data-en="The O2O Loop">线上下线闭环</h2>
+    <div class="loop rv">
+      <p class="row-label" data-zh="线上 · ONLINE" data-en="ONLINE">线上 · ONLINE</p>
+      <h3 data-zh="数字系统：承接、记录、延长" data-en="The digital layer: carry, record, extend">数字系统：承接、记录、延长</h3>
+      <div class="chips">
+        <span class="chip" data-zh="激活身份" data-en="Activate identity">激活身份</span><span class="arrow">→</span>
+        <span class="chip" data-zh="智能路线" data-en="Smart route">智能路线</span><span class="arrow">→</span>
+        <span class="chip" data-zh="实时导航" data-en="Live navigation">实时导航</span><span class="arrow">→</span>
+        <span class="chip" data-zh="文化护照" data-en="Culture passport">文化护照</span><span class="arrow">→</span>
+        <span class="chip hl" data-zh="文脉值" data-en="Culture points">文脉值</span>
+      </div>
+      <p class="row-label" data-zh="线下 · OFFLINE" data-en="OFFLINE">线下 · OFFLINE</p>
+      <h3 data-zh="实体触点：制造记忆" data-en="The physical layer: create memories">实体触点：制造记忆</h3>
+      <div class="chips">
+        <span class="chip hl" data-zh="纸质门票" data-en="Paper ticket">纸质门票</span><span class="arrow">→</span>
+        <span class="chip" data-zh="到点任务" data-en="Onsite tasks">到点任务</span><span class="arrow">→</span>
+        <span class="chip" data-zh="集章" data-en="Stamp collecting">集章</span><span class="arrow">→</span>
+        <span class="chip" data-zh="兑换礼品" data-en="Gift redemption">兑换礼品</span>
+      </div>
+      <div class="bridges">
+        <div class="bridge"><b data-zh="门票绑定" data-en="Ticket binding">门票绑定</b><span data-zh="纸质门票扫码即激活线上身份，线下购买成为线上旅程的起点。" data-en="Scanning the paper ticket activates the online identity — the offline purchase starts the online journey.">纸质门票扫码即激活线上身份，线下购买成为线上旅程的起点。</span></div>
+        <div class="bridge"><b data-zh="任务同步" data-en="Task sync">任务同步</b><span data-zh="线下到点任务与集章实时同步进文化护照，实体印章与电子印章一一对应。" data-en="Onsite tasks and stamps sync into the culture passport in real time; physical and digital stamps mirror each other.">线下到点任务与集章实时同步进文化护照，实体印章与电子印章一一对应。</span></div>
+        <div class="bridge"><b data-zh="文脉值核销" data-en="Points redemption">文脉值核销</b><span data-zh="线上积攒的文脉值，在线下游客中心出示兑换码核销领取实体奖励。" data-en="Points earned online are redeemed with a code at the offline visitor center for physical rewards.">线上积攒的文脉值，在线下游客中心出示兑换码核销领取实体奖励。</span></div>
+      </div>
+      <p class="loop-note" data-zh="线上与线下不是两套系统，而是一次旅程的两种质地：实体触点制造记忆，数字系统承接、记录并延长记忆。" data-en="Online and offline are not two systems but two textures of one journey: physical touchpoints create memories; the digital system carries, records, and extends them.">线上与线下不是两套系统，而是一次旅程的两种质地：实体触点制造记忆，数字系统承接、记录并延长记忆。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 设计语言 -->
+<section class="section light" id="designlang">
+  <div class="section-inner">
+    <div class="section-kicker rv" data-zh="06 · 设计语言" data-en="06 · Design Language">06 · 设计语言</div>
+    <h2 class="rv" data-zh="设计语言" data-en="Design Language">设计语言</h2>
+    <div class="dl-grid">
+      <div class="card-light rv">
+        <div class="swatches">
+          <div class="sw"><div class="c" style="background:#f03d6e"></div><div class="t"><b data-zh="品牌玫红" data-en="Brand Rose">品牌玫红</b>#f03d6e</div></div>
+          <div class="sw"><div class="c" style="background:#1d473b"></div><div class="t"><b data-zh="墨绿" data-en="Pine">墨绿</b>#1d473b</div></div>
+          <div class="sw"><div class="c" style="background:#f4f6f2"></div><div class="t"><b data-zh="纸面" data-en="Paper">纸面</b>#f4f6f2</div></div>
+          <div class="sw"><div class="c" style="background:#17231f"></div><div class="t"><b data-zh="墨色" data-en="Ink">墨色</b>#17231f</div></div>
+          <div class="sw"><div class="c" style="background:#ffe7ee"></div><div class="t"><b data-zh="浅粉" data-en="Blush">浅粉</b>#ffe7ee</div></div>
+        </div>
+      </div>
+      <div class="card-light rv">
+        <h4 data-zh="字体随语言自适应" data-en="Typography adapts to language">字体随语言自适应</h4>
+        <p class="type-demo-zh">九里假日记 · 峰终定律</p>
+        <p class="type-demo-en">Jiuli Holiday Diary · Peak-End Rule</p>
+        <p class="dl-note" data-zh="中文模式使用 Noto Sans SC，两端对齐、行高 1.95；英文模式切换为 Inter，左对齐、行高 1.7，并收紧标题字距——界面随语言调整。" data-en="Chinese mode sets Noto Sans SC with justified text at 1.95 leading; English mode switches to Inter, left-aligned at 1.7 leading with tighter headline tracking — the interface adapts to the language.">中文模式使用 Noto Sans SC，两端对齐、行高 1.95；英文模式切换为 Inter，左对齐、行高 1.7，并收紧标题字距——界面随语言调整。</p>
+      </div>
+    </div>
+    <div class="card-dark rv" style="margin-top:18px">
+      <div class="prose">
+        <p data-zh="视觉识别延续<strong>「九里阳光」</strong>红白体系，贯穿门票、集章卡与文创产品；线下方案板采用<strong>粉黑线条插画</strong>，与线上 App 的圆角卡片、玫红主色形成呼应。" data-en="The identity continues the <strong>&quot;Jiuli Sunshine&quot;</strong> red-and-white system across tickets, stamp cards and merchandise; the offline boards use <strong>pink-and-black line illustration</strong>, echoing the app's rounded cards and rose primary color.">视觉识别延续<strong>「九里阳光」</strong>红白体系，贯穿门票、集章卡与文创产品；线下方案板采用<strong>粉黑线条插画</strong>，与线上 App 的圆角卡片、玫红主色形成呼应。</p>
+        <p data-zh="页面内容依据 2022 年原始方案板与导览 App 界面设计稿整理；效果图为重新绘制。" data-en="Content compiled from the 2022 original concept boards and the guide app UI designs; illustrations newly rendered.">页面内容依据 2022 年原始方案板与导览 App 界面设计稿整理；效果图为重新绘制。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <span data-zh="九里 · 线上线下融合的文旅服务设计" data-en="JIULI · O2O Cultural Tourism Service Design">九里 · 线上线下融合的文旅服务设计</span>
+</footer>
+
+<button class="back-to-top" id="backToTop" type="button" data-zh-aria="回到顶部" data-en-aria="Back to top" aria-label="回到顶部">↑</button>
+
+<script>
+(function(){
+  var KEY='jiuli-lang';
+  function apply(lang){
+    document.documentElement.setAttribute('lang',lang);
+    document.querySelectorAll('[data-zh]').forEach(function(el){
+      var v = lang==='zh' ? el.getAttribute('data-zh') : el.getAttribute('data-en');
+      if(v==null) return;
+      if(el.tagName==='META'){ el.setAttribute('content', v); }
+      else { el.innerHTML=v; }
+    });
+    document.querySelectorAll('[data-lang]').forEach(function(b){
+      var on = b.getAttribute('data-lang')===lang;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-pressed', String(on));
+    });
+    document.querySelectorAll('[data-zh-aria]').forEach(function(el){
+      var av = lang==='zh' ? el.getAttribute('data-zh-aria') : el.getAttribute('data-en-aria');
+      if(av!=null) el.setAttribute('aria-label', av);
+    });
+    /* App 截图随语言切换中 / 英文版 */
+    document.querySelectorAll('img[data-en-src]').forEach(function(img){
+      if(!img.hasAttribute('data-zh-src')) img.setAttribute('data-zh-src', img.getAttribute('src'));
+      img.setAttribute('src', lang==='en' ? img.getAttribute('data-en-src') : img.getAttribute('data-zh-src'));
+      var az = img.getAttribute('data-alt-zh'), ae = img.getAttribute('data-alt-en');
+      if(az!=null && ae!=null) img.setAttribute('alt', lang==='zh' ? az : ae);
+    });
+    try{localStorage.setItem(KEY,lang);}catch(e){}
+  }
+  window.setLang=function(lang){apply(lang);};
+  document.querySelectorAll('[data-lang]').forEach(function(b){
+    b.addEventListener('click',function(){apply(b.getAttribute('data-lang'));});
+  });
+  var init='zh';
+  try{init=localStorage.getItem(KEY)||'zh';}catch(e){}
+  if(init!=='zh'&&init!=='en')init='zh';
+  apply(init);
+
+  // reveal on scroll
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target);}});
+  },{threshold:.1});
+  document.querySelectorAll('.rv').forEach(function(el){io.observe(el);});
+
+  // smooth anchor scroll with header offset + active link on click（敦煌逻辑）
+  var siteHeader=document.querySelector('.site-header');
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(e){
+      var hash=a.getAttribute('href');
+      if(!hash||hash.charAt(0)!=='#'||hash.length<2)return;
+      var target=document.querySelector(hash);
+      if(!target)return;
+      e.preventDefault();
+      var y=target.getBoundingClientRect().top+window.scrollY-(siteHeader?siteHeader.offsetHeight+14:90);
+      window.scrollTo({top:Math.max(0,y),behavior:'smooth'});
+      try{history.replaceState(null,'',hash);}catch(err){}
+      document.querySelectorAll('.nav-link').forEach(function(n){
+        n.classList.toggle('active',n.getAttribute('href')===hash);
+      });
+    });
+  });
+
+  // back to top
+  var btt=document.getElementById('backToTop');
+  window.addEventListener('scroll',function(){
+    btt.classList.toggle('show',window.scrollY>600);
+  },{passive:true});
+  btt.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+
+  // counters
+  var cio=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting)return;
+      cio.unobserve(e.target);
+      var target=parseInt(e.target.getAttribute('data-target'),10)||0;
+      var t0=null,dur=1200;
+      function step(t){
+        if(!t0)t0=t;
+        var p=Math.min((t-t0)/dur,1);
+        e.target.textContent=Math.round(target*(1-Math.pow(1-p,3)));
+        if(p<1)requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  },{threshold:.4});
+  document.querySelectorAll('.counter').forEach(function(el){cio.observe(el);});
+})();
+</script>
+</body>
+</html>
