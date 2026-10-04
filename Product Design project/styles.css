@@ -15,9 +15,11 @@
     pointer-events: none;
   }
   .topbar-inner {
-    display: flex; align-items: center; justify-content: flex-end;
+    max-width: 1280px; margin: 0 auto;
+    display: flex; align-items: center;
     gap: clamp(10px,1.7vw,18px); pointer-events: auto; flex-wrap: wrap;
   }
+  .topbar-inner .nav-pill { margin: 0 auto; }
   .back-home {
     position: fixed; z-index: 60;
     top: calc(14px + env(safe-area-inset-top, 0px) + clamp(44px,5.2vw,48px)/2);
