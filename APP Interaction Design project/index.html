@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -38,8 +38,9 @@ html[lang="en"] h3{letter-spacing:.01em}
 .site-header{position:fixed;top:0;left:0;right:0;z-index:50;
   padding:calc(14px + env(safe-area-inset-top)) clamp(14px,2.4vw,26px) 14px clamp(14px,3vw,32px);
   background:linear-gradient(180deg,rgba(0,0,0,.75),rgba(0,0,0,0));pointer-events:none}
-.header-inner{max-width:1180px;margin:0 0 0 auto;display:flex;align-items:center;justify-content:flex-end;
+.header-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;
   gap:clamp(10px,1.7vw,18px);pointer-events:auto}
+.header-inner .nav-pill{margin:0 auto}
 .brand{display:inline-flex;align-items:center;gap:9px;height:clamp(44px,5.2vw,48px);padding:0 18px;flex:0 0 auto;
   border-radius:999px;background:#fff;color:#000;border:1px solid rgba(0,0,0,.08);box-shadow:0 10px 30px rgba(0,0,0,.10);
   font-family:'Doto',"Noto Sans SC",sans-serif;font-weight:800;font-size:clamp(11px,1.1vw,13px);letter-spacing:.08em;white-space:nowrap;
@@ -293,7 +294,7 @@ html[lang="en"] .type-demo-zh{display:none}
       <a class="nav-link" href="#designlang" data-nav="designlang"><span data-zh="设计语言" data-en="Design">设计语言</span></a>
     </nav>
     <div class="lang-toggle" role="group" aria-label="Language">
-      <button type="button" data-lang="en">EN</button><button type="button" data-lang="zh" class="active">中</button>
+      <button type="button" data-lang="en" class="active">EN</button><button type="button" data-lang="zh">中</button>
     </div>
   </div>
 </header>
@@ -660,9 +661,9 @@ html[lang="en"] .type-demo-zh{display:none}
   document.querySelectorAll('[data-lang]').forEach(function(b){
     b.addEventListener('click',function(){apply(b.getAttribute('data-lang'));});
   });
-  var init='zh';
-  try{init=localStorage.getItem(KEY)||'zh';}catch(e){}
-  if(init!=='zh'&&init!=='en')init='zh';
+  var init='en';
+  try{init=localStorage.getItem(KEY)||'en';}catch(e){}
+  if(init!=='zh'&&init!=='en')init='en';
   apply(init);
 
   // reveal on scroll
