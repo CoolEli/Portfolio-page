@@ -38,9 +38,10 @@ html[lang="en"] h3{letter-spacing:.01em}
 .site-header{position:fixed;top:0;left:0;right:0;z-index:50;
   padding:calc(14px + env(safe-area-inset-top)) clamp(14px,2.4vw,26px) 14px clamp(14px,3vw,32px);
   background:linear-gradient(180deg,rgba(0,0,0,.75),rgba(0,0,0,0));pointer-events:none}
-.header-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;
-  gap:clamp(10px,1.7vw,18px);pointer-events:auto}
-.header-inner .nav-pill{margin:0 auto}
+.header-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:clamp(10px,1.7vw,18px);pointer-events:auto}
+.nav-center{grid-column:2;display:flex;align-items:center;gap:clamp(10px,1.7vw,18px)}
+.header-inner .lang-toggle{grid-column:3;justify-self:end}
+
 .brand{display:inline-flex;align-items:center;gap:9px;height:clamp(44px,5.2vw,48px);padding:0 18px;flex:0 0 auto;
   border-radius:999px;background:#fff;color:#000;border:1px solid rgba(0,0,0,.08);box-shadow:0 10px 30px rgba(0,0,0,.10);
   font-family:'Doto',"Noto Sans SC",sans-serif;font-weight:800;font-size:clamp(11px,1.1vw,13px);letter-spacing:.08em;white-space:nowrap;
@@ -269,11 +270,12 @@ html[lang="en"] .type-demo-zh{display:none}
 /* mobile ââ ä¸¥æ ¼éµå¾ª Dunhuang é»è¾ï¼æ æ±å ¡èåï¼è¶åæ¨ªæ» */
 @media(max-width:900px){
   .site-header{padding-top:calc(70px + env(safe-area-inset-top))}
-  .header-inner{width:100%;min-width:0;gap:8px}
+  .header-inner{width:100%;min-width:0;gap:8px;grid-template-columns:1fr auto}
   .brand{display:none}
+  .nav-center{grid-column:1;display:flex;min-width:0}
   .nav-pill{min-width:0;flex:1;justify-content:flex-start;padding:4px 8px}
   .nav-pill .nav-link{padding:10px 9px 13px}
-  .lang-toggle{flex-shrink:0}
+  .header-inner .lang-toggle{grid-column:2}
   .site-footer{flex-direction:column;gap:8px;text-align:center}
 }
 </style>
@@ -283,6 +285,7 @@ html[lang="en"] .type-demo-zh{display:none}
 <!-- 导航栏：严格遵循 Dunhuang 项目页逻辑 -->
 <header class="site-header" id="top">
   <div class="header-inner">
+    <div class="nav-center">
     <a class="brand" href="#overview"><span class="dot" aria-hidden="true"></span><span data-zh="九里" data-en="JIULI">九里</span></a>
     <nav class="nav-pill" aria-label="Primary">
       <a class="nav-link active" href="#overview" data-nav="overview"><span data-zh="概览" data-en="Overview">概览</span></a>
@@ -293,13 +296,14 @@ html[lang="en"] .type-demo-zh{display:none}
       <a class="nav-link" href="#loop" data-nav="loop"><span data-zh="闭环" data-en="Loop">闭环</span></a>
       <a class="nav-link" href="#designlang" data-nav="designlang"><span data-zh="设计语言" data-en="Design">设计语言</span></a>
     </nav>
+  </div>
     <div class="lang-toggle" role="group" aria-label="Language">
       <button type="button" data-lang="en" class="active">EN</button><button type="button" data-lang="zh">中</button>
     </div>
   </div>
 </header>
 
-<a class="fab fab-home" href="https://cooleli.github.io/CV-project/" target="_blank" rel="noopener">
+<a class="fab fab-home" href="https://cooleli.github.io/CV-project/#projects" target="_blank" rel="noopener">
   <span data-zh="返回首页" data-en="Back home">返回首页</span>
 </a>
 
