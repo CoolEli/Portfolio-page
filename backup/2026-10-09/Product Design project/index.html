@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Design — Hover Gallery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+  <a class="fab fab-home" href="https://cooleli.github.io/CV-project/#projects" target="_blank" rel="noopener" aria-label="Back home"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3z"/></svg><span data-en="Back home" data-zh="返回首页">Back home</span></a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="nav-center">
+      <span class="brand"><span class="dot"></span>PRODUCT&nbsp;DESIGN</span>
+      <nav class="nav-pill" aria-label="Sections">
+        <a class="nav-link active" href="#partA" data-nav="a"><span data-en="Academic" data-zh="在校设计">Academic</span></a>
+        <a class="nav-link" href="#partB" data-nav="b"><span data-en="Commercial" data-zh="商业设计">Commercial</span></a>
+      </nav>
+    </div>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang="en" class="on">EN</button><button type="button" data-lang="zh">中</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 在校设计 / Academic -->
+  <section class="part" id="partA">
+    <div class="part-kicker"><span class="dot">●</span>&nbsp; <span data-en="Academic Works" data-zh="在校设计">Academic Works</span> &nbsp;/&nbsp; 01</div>
+    <div class="members" id="membersA">
+      <div class="name-wrap" id="nameWrapA"><div class="giant" id="nameA"></div></div>
+      <p class="desc" id="descA"></p>
+    </div>
+  </section>
+
+  <!-- 商业设计 / Commercial -->
+  <section class="part" id="partB">
+    <div class="part-kicker"><span class="dot">●</span>&nbsp; <span data-en="Commercial Works" data-zh="商业设计">Commercial Works</span> &nbsp;/&nbsp; 02</div>
+    <div class="members" id="membersB">
+      <div class="name-wrap" id="nameWrapB"><div class="giant" id="nameB"></div></div>
+      <p class="desc" id="descB"></p>
+    </div>
+  </section>
+
+  <div class="footer">12 WORKS · 2018 — 2024</div>
+
+  <!-- click viewer: photo expands to fill the frame -->
+  <div id="viewer" hidden>
+    <div class="viewer-backdrop" id="viewerBackdrop"></div>
+    <img id="viewerImg" alt="">
+    <div class="viewer-kicker" id="viewerKicker"></div>
+    <div class="giant viewer-name" id="viewerName"></div>
+    <p class="viewer-desc" id="viewerDesc"></p>
+    <div class="viewer-hint" data-en="Click image to zoom · Click elsewhere or ESC to close" data-zh="点击图片缩放 · 点击别处或按 ESC 关闭">Click image to zoom · Click elsewhere or ESC to close</div>
+    <button id="viewerClose" type="button" aria-label="Close">✕</button>
+  </div>
+
+  <div id="badge"><div class="badge-dot">↗</div></div>
+  <div class="hint" id="hint" data-en="Hover the works" data-zh="悬停查看作品">Hover the works</div>
+
+  <script src="./app.js"></script>
+
+</body>
+</html>
