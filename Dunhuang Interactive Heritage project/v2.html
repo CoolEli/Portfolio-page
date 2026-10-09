@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Stone Reveal — Dunhuang Interactive Heritage</title>
+<meta name="description" content="Stone Reveal — four Dunhuang Buddhas rebuilt as clouds of firefly particles. Wipe away the dust with your hands, reveal the golden body.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Doto:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" media="print" onload="this.media=\'all\'" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<link rel="stylesheet" href="styles/main-v2.css">
+<style id="eli-theme">/* ===== ELI.Z unified theme layer (matches CV homepage) ===== */
+:root{--red:#f2501f;--red-deep:#d9441a;--pink:#f2501f;--pink-deep:#d9441a;--accent:#f2501f;
+  --eli-red:#f2501f;--eli-glow:rgba(242,80,31,.45);--eli-line:rgba(255,255,255,.08);--eli-line2:rgba(255,255,255,.16);
+  --eli-sans:"PingFang SC","PingFang TC","苹方-简","Helvetica Neue","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;
+  --eli-dot:"Doto",ui-monospace,monospace;--eli-ease:cubic-bezier(.22,1,.36,1)}
+html{scroll-behavior:smooth}
+body{font-family:var(--eli-sans)}
+::selection{background:var(--eli-red);color:#fff}
+:focus-visible{outline:1px solid var(--eli-red)!important;outline-offset:3px}
+
+/* background layers, same as homepage */
+.eli-grid{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--eli-line) 1px,transparent 1px),linear-gradient(90deg,var(--eli-line) 1px,transparent 1px);
+  background-size:80px 80px;-webkit-mask-image:radial-gradient(ellipse at 50% 30%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 30%,#000 20%,transparent 75%);opacity:.45}
+.eli-scan{position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 3px)}
+.eli-glow{position:fixed;left:0;top:0;width:520px;height:520px;border-radius:50%;pointer-events:none;z-index:1;
+  background:radial-gradient(circle,rgba(255,255,255,.05),transparent 65%);transform:translate(-50%,-50%);opacity:0;transition:opacity .4s}
+
+/* ---------- header: homepage style ---------- */
+.site-header,.topbar{background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+  padding:14px clamp(18px,4vw,48px)!important;border-bottom:1px solid transparent;transition:background .4s,border-color .4s;pointer-events:none}
+.site-header.eli-scrolled,.topbar.eli-scrolled{background:rgba(5,5,5,.72)!important;-webkit-backdrop-filter:blur(14px)!important;backdrop-filter:blur(14px)!important;border-color:var(--eli-line)}
+.header-inner,.topbar-inner{max-width:none!important;display:flex!important;align-items:center;justify-content:space-between;gap:16px;pointer-events:auto}
+.nav-center{display:flex!important;align-items:center;gap:22px;min-width:0;flex:1 1 auto}
+.site-header .brand,.topbar .brand{display:none!important}
+.eli-brand{display:inline-flex;align-items:baseline;gap:10px;font-family:var(--eli-dot);font-weight:800;font-size:22px;letter-spacing:.04em;color:#fff;text-decoration:none;white-space:nowrap;flex:0 0 auto}
+.eli-brand b{color:var(--eli-red)}
+.eli-brand small{font-size:12px;letter-spacing:.18em;color:#777;font-weight:800}
+.eli-brand:hover small{color:var(--eli-red)}
+.nav-pill{height:auto!important;background:#f2f2f2!important;border:0!important;border-radius:8px!important;box-shadow:none!important;padding:4px!important;gap:2px!important;margin:0 auto!important;flex:0 1 auto!important;width:auto!important}
+.nav-pill .nav-link,.nav-pill a.nl,.nav-pill a{font-family:var(--eli-dot)!important;font-weight:800!important;font-size:14px!important;letter-spacing:.02em!important;
+  padding:7px 14px!important;border-radius:6px;color:#555!important;transition:color .3s,background .3s}
+.nav-pill .nav-link::after,.nav-pill a.nl::after,.nav-pill a::before{display:none!important}
+.nav-pill a:hover{color:#000!important}
+.nav-pill a.active,.nav-pill a.on{color:#fff!important;background:#000!important}
+.eli-tools{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.lang-toggle,.site-header .lang{display:flex!important;align-items:stretch;height:auto!important;background:transparent!important;border:1px solid var(--eli-line2)!important;border-radius:6px!important;box-shadow:none!important;padding:0!important;overflow:hidden}
+.lang .knob{display:none!important}
+.lang-toggle button,.site-header .lang button{font-family:var(--eli-dot)!important;font-weight:800!important;font-size:13px!important;background:none!important;border:0!important;border-radius:0!important;color:#a3a3a6!important;opacity:1!important;padding:7px 12px!important;cursor:pointer;transition:background .25s,color .25s}
+.lang-toggle button.active,.lang-toggle button.on,.site-header .lang button.on{background:#fff!important;color:#000!important}
+/* back home button lives in header */
+.eli-home{display:flex;align-items:center;gap:12px;font-family:var(--eli-dot);font-weight:800;font-size:14px;padding:4px 16px 4px 4px;border-radius:8px;background:#111;border:1px solid var(--eli-line2);color:#fff;text-decoration:none;white-space:nowrap;transition:all .3s var(--eli-ease)}
+.eli-home i{width:30px;height:30px;border-radius:6px;display:grid;place-items:center;background:#000;border:1px solid var(--eli-line2);font-style:normal;transition:background .3s,transform .3s var(--eli-ease)}
+.eli-home:hover{border-color:var(--eli-red);box-shadow:0 0 24px var(--eli-glow)}
+.eli-home:hover i{background:var(--eli-red);border-color:var(--eli-red);transform:translateX(-2px)}
+.fab-home{display:none!important}
+@media (max-width:900px){.nav-pill{display:none!important}.eli-brand small{display:none}}
+@media (max-width:520px){.eli-home span{display:none}.eli-home{padding:4px}}
+
+/* floating buttons: homepage square style */
+.fab{border-radius:8px!important;background:#111!important;color:#fff!important;border:1px solid var(--eli-line2)!important;box-shadow:none!important;font-family:var(--eli-dot)!important;font-weight:800!important;transition:all .3s var(--eli-ease)!important}
+.fab:hover{background:#111!important;border-color:var(--eli-red)!important;box-shadow:0 0 24px var(--eli-glow)!important;color:#fff!important}
+.fab i,.fab svg{color:var(--eli-red)}
+
+/* generic button feedback */
+button,.fab,.eli-home,.eli-next a,a[class*="btn"]{-webkit-tap-highlight-color:transparent}
+button:active,.fab:active,.eli-home:active,a[class*="btn"]:active{transform:scale(.97)}
+.eli-ping{position:fixed;width:10px;height:10px;border:1px solid var(--eli-red);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);animation:eliPing .5s var(--eli-ease) forwards}
+@keyframes eliPing{to{width:46px;height:46px;opacity:0}}
+
+/* design-software chrome: rulers, guides, inspector */
+.eli-rx,.eli-ry{position:fixed;left:0;top:0;z-index:58;pointer-events:none}
+.eli-ry{top:16px}
+.eli-gx,.eli-gy{position:fixed;z-index:39;pointer-events:none;opacity:0;transition:opacity .3s}
+.eli-gx{left:16px;right:0;top:0;height:0;border-top:1px dashed rgba(242,80,31,.32)}
+.eli-gy{top:16px;bottom:0;left:0;width:0;border-left:1px dashed rgba(242,80,31,.32)}
+html.eli-chrome .site-header,html.eli-chrome .topbar{padding-top:24px!important;padding-left:calc(16px + clamp(18px,4vw,48px))!important}
+.eli-sel{position:fixed;pointer-events:none;z-index:57;border:1px solid var(--eli-red);opacity:0;transition:opacity .2s,left .18s var(--eli-ease),top .18s var(--eli-ease),width .18s var(--eli-ease),height .18s var(--eli-ease)}
+.eli-sel.on{opacity:1}
+.eli-sel i{position:absolute;width:7px;height:7px;background:#fff;border:1px solid var(--eli-red)}
+.eli-sel i:nth-child(1){left:-4px;top:-4px}.eli-sel i:nth-child(2){right:-4px;top:-4px}.eli-sel i:nth-child(3){left:-4px;bottom:-4px}.eli-sel i:nth-child(4){right:-4px;bottom:-4px}
+.eli-sel span{position:absolute;left:-1px;top:-21px;font:10.5px/1 ui-monospace,monospace;background:var(--eli-red);color:#fff;padding:4px 6px;white-space:nowrap}
+.eli-sel em{position:absolute;left:50%;bottom:-22px;transform:translateX(-50%);font:10.5px/1 ui-monospace,monospace;font-style:normal;background:var(--eli-red);color:#fff;border-radius:3px;padding:4px 6px;white-space:nowrap}
+
+/* progress + HUD */
+.eli-progress{position:fixed;left:0;top:0;height:2px;width:0;background:var(--eli-red);z-index:200;box-shadow:0 0 10px var(--eli-glow)}
+.eli-hud{position:fixed;left:calc(16px + clamp(14px,2.4vw,26px));bottom:clamp(14px,2.4vw,26px);z-index:55;font:11px/1.5 ui-monospace,monospace;color:#666;letter-spacing:.06em;pointer-events:none}
+.eli-hud b{color:#ddd;font-weight:400}.eli-hud .d{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--eli-red);margin-right:6px;box-shadow:0 0 8px var(--eli-red);animation:eliBlink 1.6s infinite}
+@keyframes eliBlink{50%{opacity:.25}}
+@media (max-width:700px){.eli-hud{display:none}}
+
+/* next project bar */
+.eli-next{position:relative;z-index:3;display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:stretch;padding:40px clamp(18px,4vw,48px) 30px;border-top:1px solid var(--eli-line);background:#050505;margin-top:60px}
+.eli-next a{display:flex;flex-direction:column;gap:8px;padding:22px 24px;border:1px solid var(--eli-line);border-radius:10px;background:#0c0c0d;color:#f5f5f5;text-decoration:none;position:relative;overflow:hidden;transition:border-color .35s,box-shadow .35s}
+.eli-next a::before{content:"";position:absolute;inset:0;background:radial-gradient(400px circle at var(--x,50%) var(--y,50%),rgba(242,80,31,.16),transparent 60%);opacity:0;transition:opacity .35s}
+.eli-next a:hover{border-color:var(--eli-red);box-shadow:0 0 30px rgba(242,80,31,.18)}
+.eli-next a:hover::before{opacity:1}
+.eli-next small{font-family:var(--eli-dot);font-weight:800;font-size:12px;letter-spacing:.24em;color:var(--eli-red)}
+.eli-next strong{font-family:var(--eli-dot);font-weight:800;font-size:clamp(18px,2vw,26px);letter-spacing:.02em}
+.eli-next .nx{text-align:right;align-items:flex-end}
+.eli-next .hm{justify-content:center;align-items:center;min-width:140px}
+.eli-next .hm strong{font-size:16px}
+.eli-foot{position:relative;z-index:3;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 24px;padding:18px clamp(18px,4vw,48px) 26px;background:#050505;color:#5f5f63;font-size:12px}
+.eli-foot .d{font-family:var(--eli-dot);font-weight:800;letter-spacing:.1em}
+@media (max-width:760px){.eli-next{grid-template-columns:1fr 1fr}.eli-next .hm{grid-column:1/-1;order:3}}
+
+/* page transition, same language as the homepage splash */
+.eli-veil{position:fixed;inset:0;z-index:9999;background:#000;display:grid;place-items:center;transition:transform .6s var(--eli-ease)}
+.eli-veil.out{transform:translateY(-100%)}
+.eli-veil.idle{transform:translateY(100%);transition:none}
+.eli-veil.in{transform:translateY(0)}
+.eli-veil .t{font-family:var(--eli-dot);font-weight:900;font-size:clamp(34px,6vw,78px);color:#fff;letter-spacing:.02em;text-align:center;line-height:1.05;padding:0 20px}
+.eli-veil .l{font-family:var(--eli-dot);font-weight:800;font-size:12px;letter-spacing:.4em;color:#777;margin-top:14px;text-align:center}
+.eli-veil .b{width:200px;height:2px;background:#222;margin:18px auto 0;overflow:hidden}
+.eli-veil .b i{display:block;height:100%;width:0;background:var(--eli-red);transition:width .45s var(--eli-ease)}
+.eli-veil.ready .b i{width:100%}
+@media (prefers-reduced-motion:reduce){.eli-veil{display:none}}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="site-header" id="top">
+  <div class="header-inner">
+    <div class="nav-center">
+    <a class="brand" href="#top" aria-label="Stone Reveal — back to top"><span class="dot" aria-hidden="true"></span>STONE&nbsp;REVEAL</a>
+    <nav class="nav-pill" aria-label="Primary">
+      <a class="nav-link active" href="#intro" data-nav="intro"><span data-en="Intro" data-zh="介绍">Intro</span></a>
+      <a class="nav-link" href="#acts" data-nav="acts"><span data-en="Acts" data-zh="三幕">Acts</span></a>
+      <a class="nav-link" href="#hands" data-nav="hands"><span data-en="Hands" data-zh="手势">Hands</span></a>
+      <a class="nav-link" href="#demo" data-nav="demo"><span data-en="Demo" data-zh="演示">Demo</span></a>
+      <a class="nav-link" href="#film" data-nav="film"><span data-en="Film" data-zh="影片">Film</span></a>
+    </nav>
+  </div>
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button type="button" data-lang="en" class="active">EN</button><button type="button" data-lang="zh">中</button>
+    </div>
+  </div>
+</header>
+
+<a class="fab fab-home" href="https://cooleli.github.io/CV-project/v2/#projects" aria-label="Back home"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3z"/></svg><span data-en="Back home" data-zh="返回首页">Back home</span></a>
+
+<main>
+  <!-- ================= CINEMATIC HERO ================= -->
+  <section class="cine-hero" id="hero">
+    <div class="px-frame"><img class="px" src="./stone-reveal-hero-particle-buddha.opt.webp" alt="Beida Buddha as a cloud of golden particles"></div>
+    <div class="hero-tag" data-en="A ritual of revealing" data-zh="一场显影的仪式">A ritual of revealing</div>
+    <div class="hero-caption">
+      <b data-en="Beida Buddha" data-zh="北大像">Beida Buddha</b>
+      <span data-en="as a cloud of firefly dust" data-zh="化作萤火尘埃">as a cloud of firefly dust</span>
+    </div>
+    <div class="hero-scroll"><span data-en="Scroll" data-zh="下滑">Scroll</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></div>
+  </section>
+
+  <!-- ================= EDITORIAL TITLE ================= -->
+  <section class="title-block" id="intro">
+    <div class="rule"></div>
+    <div class="title-content">
+      <div class="kicker"><span class="rdot" aria-hidden="true"></span><span data-en="Dunhuang Interactive Heritage" data-zh="敦煌互动文化遗产">Dunhuang Interactive Heritage</span></div>
+      <h1 class="mega" aria-label="Stone Reveal">
+        <span class="ml"><span data-en="STONE" data-zh="石之">STONE</span></span>
+        <span class="ml"><span data-en="REVEAL" data-zh="显影">REVEAL</span></span>
+      </h1>
+      <p class="lede fade-up" data-en="Dunhuang's statues stand outdoors, where wind, sand and sun are slowly erasing their faces. Here, four Buddhas are rebuilt as drifting firefly dust — no headset, no controller, only your hands. Brush the dust away with devotion, and watch the golden body shine again." data-zh="敦煌的造像立在户外，风沙与烈日正一点点抹去它们的面容。这里，四尊佛像被重建成漂浮的萤火尘埃——没有头显，没有手柄，只有你的双手。以虔诚拂去尘埃，看金身重现金光。">Dunhuang's statues stand outdoors, where wind, sand and sun are slowly erasing their faces. Here, four Buddhas are rebuilt as drifting firefly dust — no headset, no controller, only your hands. Brush the dust away with devotion, and watch the golden body shine again.</p>
+      <button class="down-arrow" id="downArrow" type="button" aria-label="Scroll to acts"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></button>
+    </div>
+    <div class="rule"></div>
+  </section>
+
+  <!-- ================= THREE ACTS ================= -->
+  <div id="acts">
+    <section class="act">
+      <div class="px-frame"><img class="px" src="./stone-reveal-act1-feitian-particles.opt.webp" alt="Contemplate — the Buddha as particles"></div>
+      <div class="act-body">
+        <div class="act-no" data-en="Act one" data-zh="第一幕">Act one</div>
+        <h2 class="act-title"><span class="ml"><span data-en="Contemplate" data-zh="观想">Contemplate</span></span></h2>
+        <p class="act-line fade-up" data-en="Under wind and sand, the Buddha’s face is blurring — for now, the Buddha is a breathing cloud of particles. “Touch gently. The Buddha waits to be lit.”" data-zh="风沙之下，佛的面容正在模糊——此刻，佛是一团会呼吸的粒子云。「轻一点，佛在等你点亮。」">Under wind and sand, the Buddha’s face is blurring — for now, the Buddha is a breathing cloud of particles. “Touch gently. The Buddha waits to be lit.”</p>
+        <div class="act-cap" data-en="Phase one · particle contemplation" data-zh="第一阶段 · 粒子观想">Phase one · particle contemplation</div>
+      </div>
+    </section>
+    <section class="act">
+      <div class="px-frame"><img class="px" src="./stone-reveal-act2-wipe-reveal.opt.webp" alt="Reveal — wiping the dust away"></div>
+      <div class="act-body">
+        <div class="act-no" data-en="Act two" data-zh="第二幕">Act two</div>
+        <h2 class="act-title"><span class="ml"><span data-en="Reveal" data-zh="擦拭">Reveal</span></span></h2>
+        <p class="act-line fade-up" data-en="The oldest devotion is wiping with your own hands — wherever they pass, the painted gold emerges from the dust." data-zh="古老的供养，是亲手擦拭——手到之处，彩绘金身从尘埃中显现。">The oldest devotion is wiping with your own hands — wherever they pass, the painted gold emerges from the dust.</p>
+        <div class="act-cap" data-en="Phase two · wipe to reveal" data-zh="第二阶段 · 擦拭显现">Phase two · wipe to reveal</div>
+      </div>
+    </section>
+    <section class="act">
+      <div class="px-frame"><img class="px" src="./stone-reveal-act3-half-particle-gold.opt.webp" alt="Bless — the golden body"></div>
+      <div class="act-body">
+        <div class="act-no" data-en="Act three" data-zh="第三幕">Act three</div>
+        <h2 class="act-title"><span class="ml"><span data-en="Bless" data-zh="赐福">Bless</span></span></h2>
+        <p class="act-line fade-up" data-en="The dust settles, the golden body is whole — and a blessing is drawn for you. Twelve blessings, never twice the same." data-zh="尘埃落尽，金身圆满——并为你抽出一张祝福。十二签，签签不同。">The dust settles, the golden body is whole — and a blessing is drawn for you. Twelve blessings, never twice the same.</p>
+        <div class="act-cap" data-en="Phase three · golden body and blessing" data-zh="第三阶段 · 金身与祝福卡">Phase three · golden body and blessing</div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ================= WHY ================= -->
+  <section class="why">
+    <span class="kicker"><span class="rdot" aria-hidden="true"></span><span data-en="Why build this" data-zh="为什么做这个">Why build this</span></span>
+    <p class="fade-up" data-en="Most of Dunhuang’s statues stand outdoors — wind and sun pass over them year after year, and their faces are slowly blurring, fading away. This prototype is a blessing ritual: the old devotions — wiping the statue, keeping its lamp lit — become things your body can do inside a browser. As the faithful drift away, the Buddha-light dims; it is <strong>your hand, brushing the dust away, that brings the golden body back</strong>. May this one touch also turn your gaze toward the heritage that is disappearing." data-zh="敦煌的造像大多立在户外——风沙与烈日经年拂过，它们的面容正在一点点模糊、消失。这个原型是一场祈福仪式：古老的供养——擦拭佛像、长明灯火——变成你的身体在浏览器里就能完成的事。信众渐离，佛光渐暗；是<strong>你的手拂去尘埃，让金身重现</strong>。愿这一次触碰，也让你注视那些正在消失的遗产。">Most of Dunhuang’s statues stand outdoors — wind and sun pass over them year after year, and their faces are slowly blurring, fading away. This prototype is a blessing ritual: the old devotions — wiping the statue, keeping its lamp lit — become things your body can do inside a browser. As the faithful drift away, the Buddha-light dims; it is <strong>your hand, brushing the dust away, that brings the golden body back</strong>. May this one touch also turn your gaze toward the heritage that is disappearing.</p>
+  </section>
+
+  <!-- ================= HANDS ================= -->
+  <section class="section" id="hands">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="kicker"><span class="rdot" aria-hidden="true"></span><span data-en="The hands are the ritual" data-zh="手即仪式">The hands are the ritual</span></div>
+        <h2><span class="ml"><span data-en="Your hands are the ritual." data-zh="你的双手，就是仪式。">Your hands are the ritual.</span></span></h2>
+      </div>
+      <div class="hands-grid">
+        <figure class="hands-img fade-up">
+          <img src="./stone-reveal-hands-prayer.opt.webp" alt="Praying hands detected by the camera, blessing moment">
+          <figcaption data-en="Palms together — the camera reads the prayer" data-zh="双手合十——摄像头读懂了祈愿">Palms together — the camera reads the prayer</figcaption>
+        </figure>
+        <div>
+          <ul class="verses">
+            <li class="fade-up"><span class="vn">01</span><span class="vt"><span data-en="One hand, swipe — turn the pages of Buddhas" data-zh="单手一挥——翻过一尊尊佛">One hand, swipe — turn the pages of Buddhas</span><small data-en="switch between the four figures" data-zh="在四尊佛像之间切换">switch between the four figures</small></span></li>
+            <li class="fade-up"><span class="vn">02</span><span class="vt"><span data-en="Palms together, hold — and the gold answers" data-zh="双手合十，稍候——金身回应">Palms together, hold — and the gold answers</span><small data-en="hold one second to enter the golden phase" data-zh="保持一秒，进入金身阶段">hold one second to enter the golden phase</small></span></li>
+            <li class="fade-up"><span class="vn">03</span><span class="vt"><span data-en="Pinch — draw the Buddha near or far" data-zh="双指捏合——佛像随心远近">Pinch — draw the Buddha near or far</span><small data-en="scale 0.5×–1.5×, pose never moves" data-zh="0.5–1.5 倍缩放，姿态不动">scale 0.5×–1.5×, pose never moves</small></span></li>
+            <li class="fade-up"><span class="vn">04</span><span class="vt"><span data-en="One fingertip — brush the dust away" data-zh="一指轻拂——尘埃落尽">One fingertip — brush the dust away</span><small data-en="a golden ring follows your hand" data-zh="金色光环追随你的指尖">a golden ring follows your hand</small></span></li>
+          </ul>
+          <p class="hands-note fade-up" data-en="Tap <b>✋ GESTURE</b> at the top-right of the demo and let the camera see your hands. No camera? Keyboard and mouse walk the whole ritual too." data-zh="在演示右上角点 <b>✋ GESTURE</b>，让摄像头看见你的手。没有摄像头？键鼠也能走完整个仪式。">Tap <b>✋ GESTURE</b> at the top-right of the demo and let the camera see your hands. No camera? Keyboard and mouse walk the whole ritual too.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DEMO ================= -->
+  <section class="section" id="demo">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="kicker"><span class="rdot" aria-hidden="true"></span><span data-en="Live prototype" data-zh="可玩的原型">Live prototype</span></div>
+        <h2><span class="ml"><span data-en="Try it right here." data-zh="就在这里试试。">Try it right here.</span></span></h2>
+      </div>
+      <div class="demo-tip fade-up">
+        <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+        <p data-en="<b>Before you play:</b> first visit takes a minute or two — four Buddhas are loading. For gesture play, tap <b>✋ GESTURE</b> at the top-right of the demo and allow the camera." data-zh="<b>开始之前：</b>第一次打开要等一两分钟——四尊佛像正在加载。想用手势玩，就点演示右上角的 <b>✋ GESTURE</b> 并允许摄像头。"><b>Before you play:</b> first visit takes a minute or two — four Buddhas are loading. For gesture play, tap <b>✋ GESTURE</b> at the top-right of the demo and allow the camera.</p>
+      </div>
+      <div class="experience-frame-wrap" id="experienceWrap">
+        <div class="experience-frame">
+          <iframe class="experience-iframe" title="Stone Reveal — interactive demo"
+            src="https://cooleli.github.io/dunhuang-gesture-buddha/"
+            allow="camera; microphone; autoplay; fullscreen" loading="lazy"></iframe>
+        </div>
+        <div class="experience-controls">
+          <button class="experience-btn" id="experienceEnterFs" type="button"><i class="fa-solid fa-expand" aria-hidden="true"></i><span data-en="Enter fullscreen" data-zh="进入全屏">Enter fullscreen</span></button>
+          <button class="experience-btn" id="experienceExitFs" type="button" hidden><i class="fa-solid fa-compress" aria-hidden="true"></i><span data-en="Exit fullscreen" data-zh="退出全屏">Exit fullscreen</span></button>
+          <button class="experience-btn" id="experienceOpenExternal" type="button"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i><span data-en="Open in new tab" data-zh="新标签页打开">Open in new tab</span></button>
+        </div>
+      </div>
+      <p class="demo-note" data-en="Gesture mode needs a camera and a desktop browser. Without one, keyboard and mouse play the whole ritual just fine." data-zh="手势模式需要摄像头和桌面浏览器。没有也没关系，键鼠能完整走完仪式。">Gesture mode needs a camera and a desktop browser. Without one, keyboard and mouse play the whole ritual just fine.</p>
+    </div>
+  </section>
+
+  <!-- ================= FILM ================= -->
+  <section class="section" id="film">
+    <div class="wrap">
+      <div class="sec-head sec-head-centered">
+        <div class="kicker"><span class="rdot" aria-hidden="true"></span><span data-en="The film" data-zh="影片">The film</span></div>
+        <h2><span class="ml"><span data-en="Watch the ritual." data-zh="看一场仪式。">Watch the ritual.</span></span></h2>
+      </div>
+      <div class="film-card fade-up" id="filmCard" role="button" tabindex="0" aria-label="Play the demo film">
+        <img class="poster" src="./stone-reveal-film-poster.opt.webp" alt="The golden Ruyi Guanyin — film poster">
+        <div class="film-play">
+          <span class="play-btn" aria-hidden="true"></span>
+          <span class="play-label"><span data-en="Watch" data-zh="观看">Watch</span><small data-en="The ritual · 44 seconds" data-zh="完整仪式 · 44 秒">The ritual · 44 seconds</small></span>
+        </div>
+      </div>
+      <p id="filmError" class="film-note" role="status" hidden data-en="The film could not load. Please check your connection and try again." data-zh="影片暂时无法加载，请检查网络后重试。">The film could not load. Please check your connection and try again.</p>
+      <p class="film-note" data-en="A recorded walkthrough — particles, wiping, the golden body and the blessing card." data-zh="完整仪式的录屏——粒子、擦拭、金身和祝福卡。">A recorded walkthrough — particles, wiping, the golden body and the blessing card.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <span class="fbrand"><span class="dot" aria-hidden="true"></span><span data-en="Stone Reveal" data-zh="石之显影">Stone Reveal</span></span>
+  <span data-en="Dunhuang Interactive Heritage" data-zh="敦煌互动文化遗产">Dunhuang Interactive Heritage</span>
+  <span data-en="Three.js · GPU Particles · MediaPipe" data-zh="Three.js · GPU 粒子 · MediaPipe">Three.js · GPU Particles · MediaPipe</span>
+</footer>
+
+<div class="fab-stack">
+  <button class="fab" id="backToTop" type="button" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+    <span data-en="Back to top" data-zh="返回顶部">Back to top</span>
+  </button>
+</div>
+
+<script src="scripts/app.js" defer></script>
+<script>window.ELI_PAGE={id:"dunhuang"};
+/* ===== ELI.Z unified theme layer: header, transitions, interactions ===== */
+(function(){
+  var HOME="https://cooleli.github.io/CV-project/v2/";
+  var BASE="https://cooleli.github.io/Portfolio-page/";
+  var LIST=[
+    {id:"bronze",en:"Bronze Ware",zh:"青铜器手势交互",p:"Bronze%20Heritage%20Gesture%20Interaction%20project/"},
+    {id:"dunhuang",en:"Stone Reveal",zh:"敦煌互动遗产",p:"Dunhuang%20Interactive%20Heritage%20project/"},
+    {id:"mr",en:"RV × MR",zh:"MR 房车内饰定制",p:"MR%20RV%20Interior%20Customization%20project/"},
+    {id:"app",en:"Jiuli APP",zh:"九里 APP 交互设计",p:"APP%20Interaction%20Design%20project/"},
+    {id:"product",en:"Product Design",zh:"产品设计",p:"Product%20Design%20project/"}];
+  var me=window.ELI_PAGE||{id:"bronze"},idx=0;LIST.forEach(function(x,i){if(x.id===me.id)idx=i});
+  var cur=LIST[idx],prev=LIST[(idx+LIST.length-1)%LIST.length],next=LIST[(idx+1)%LIST.length];
+  var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+  function zh(){return /^zh/.test(document.documentElement.lang)||document.documentElement.classList.contains("zh")}
+  function bi(en,z){return '<span data-en="'+en+'" data-zh="'+z+'">'+en+'</span>'}
+
+  /* veil: enter animation */
+  var veil=el("div","eli-veil",'<div><div class="t">'+cur.en.toUpperCase()+'</div><div class="l">ELI.Z / PROJECT '+String(idx+1).padStart(2,"0")+'</div><div class="b"><i></i></div></div>');
+  document.body.appendChild(veil);
+  requestAnimationFrame(function(){veil.classList.add("ready")});
+  setTimeout(function(){veil.classList.add("out")},reduce?0:480);
+
+  /* background layers */
+  ["eli-grid","eli-scan"].forEach(function(c){document.body.insertBefore(el("div",c),document.body.firstChild)});
+  var glow=el("div","eli-glow");document.body.appendChild(glow);
+  var prog=el("div","eli-progress");document.body.appendChild(prog);
+
+  /* header: brand + tools */
+  var hdr=document.querySelector(".site-header,.topbar");
+  if(hdr){
+    var inner=hdr.querySelector(".header-inner,.topbar-inner")||hdr;
+    var center=inner.querySelector(".nav-center")||inner;
+    var brand=el("a","eli-brand",'ELI<b>.</b>Z<small>/ '+cur.en.toUpperCase()+'</small>');brand.href=HOME;brand.setAttribute("aria-label","Eli Zeng — home");
+    center.insertBefore(brand,center.firstChild);
+    var tools=el("div","eli-tools");
+    var lang=inner.querySelector(".lang-toggle,.lang");if(lang)tools.appendChild(lang);
+    var home=el("a","eli-home",'<i>‹</i>'+bi("Home","返回首页"));home.href=HOME+"#projects";
+    tools.appendChild(home);inner.appendChild(tools);
+    addEventListener("scroll",function(){hdr.classList.toggle("eli-scrolled",scrollY>40)},{passive:true});
+  }
+
+  /* next / previous project + footer */
+  var nav=el("nav","eli-next",
+    '<a class="pv" href="'+BASE+prev.p+'v2.html"><small>← PREV</small><strong data-en="'+prev.en+'" data-zh="'+prev.zh+'">'+prev.en+'</strong></a>'+
+    '<a class="hm" href="'+HOME+'#projects"><small>ELI.Z</small><strong>'+bi("All projects","全部项目")+'</strong></a>'+
+    '<a class="nx" href="'+BASE+next.p+'v2.html"><small>NEXT →</small><strong data-en="'+next.en+'" data-zh="'+next.zh+'">'+next.en+'</strong></a>');
+  var foot=el("div","eli-foot",'<span class="d">© 2026 HANLEI ZENG · ELI.Z</span><span>'+bi("Project "+(idx+1)+" of "+LIST.length,"项目 "+(idx+1)+" / "+LIST.length)+'</span>');
+  document.body.appendChild(nav);document.body.appendChild(foot);
+  nav.querySelectorAll("a").forEach(function(a){a.addEventListener("pointermove",function(e){var r=a.getBoundingClientRect();a.style.setProperty("--x",(e.clientX-r.left)+"px");a.style.setProperty("--y",(e.clientY-r.top)+"px")})});
+
+  /* HUD */
+  var hud=el("div","eli-hud",'<span class="d"></span>'+cur.en.toUpperCase()+' · <b id="eliPct">000%</b><br>PTR <b id="eliPtr">X0000 Y0000</b>');document.body.appendChild(hud);
+  var pct=document.getElementById("eliPct"),ptr=document.getElementById("eliPtr");
+  function onScroll(){var h=document.documentElement.scrollHeight-innerHeight,p=h>0?scrollY/h:0;prog.style.width=(p*100)+"%";pct.textContent=String(Math.round(p*100)).padStart(3,"0")+"%"}
+  addEventListener("scroll",onScroll,{passive:true});onScroll();
+
+  /* shared language: homepage and every project page remember the same choice */
+  function syncLang(){var l;try{l=localStorage.getItem("lang")}catch(e){}
+    if(l!=="zh"&&l!=="en")return;var b=document.querySelector('[data-lang="'+l+'"],[data-l="'+l+'"]');if(b&&!b.classList.contains("active")&&!b.classList.contains("on"))b.click();applyBi(l)}
+  function applyBi(l){[nav,foot,tools||document.createElement("i")].forEach(function(r){r.querySelectorAll("[data-en]").forEach(function(s){s.textContent=s.getAttribute("data-"+l)})})}
+  document.addEventListener("click",function(e){var b=e.target.closest("[data-lang],[data-l]");if(!b)return;var l=b.getAttribute("data-lang")||b.getAttribute("data-l");
+    try{localStorage.setItem("lang",l)}catch(_){}setTimeout(function(){applyBi(l)},0)});
+  function initLang(){setTimeout(function(){syncLang();applyBi(zh()?"zh":"en")},0)}
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initLang);else initLang();
+
+  /* pointer: glow, HUD coordinates, click ping */
+  var gx=0,gy=0,tx=0,ty=0,raf=0;
+  addEventListener("pointermove",function(e){tx=e.clientX;ty=e.clientY;glow.style.opacity=1;ptr.textContent="X"+String(Math.round(tx)).padStart(4,"0")+" Y"+String(Math.round(ty+scrollY)).padStart(4,"0");if(!raf)raf=requestAnimationFrame(loop)},{passive:true});
+  function loop(){gx+=(tx-gx)*.18;gy+=(ty-gy)*.18;glow.style.transform="translate("+(gx-260)+"px,"+(gy-260)+"px)";raf=Math.abs(tx-gx)+Math.abs(ty-gy)>.5?requestAnimationFrame(loop):0}
+  glow.style.left="0";glow.style.top="0";
+  document.addEventListener("pointerdown",function(e){if(reduce)return;var p=el("i","eli-ping");p.style.left=e.clientX+"px";p.style.top=e.clientY+"px";document.body.appendChild(p);setTimeout(function(){p.remove()},520)});
+
+  /* design-software chrome: rulers, guides, Figma-style inspector (same as homepage) */
+  var fine=matchMedia("(hover:hover) and (min-width:761px)").matches;
+  var rx=el("canvas","eli-rx"),ry=el("canvas","eli-ry"),gX=el("div","eli-gx"),gY=el("div","eli-gy");
+  if(fine){[rx,ry,gX,gY].forEach(function(c){document.body.appendChild(c)});document.documentElement.classList.add("eli-chrome")}
+  var mxp=-1,myp=-1;
+  function drawR(){if(!fine)return;var d=Math.min(devicePixelRatio||1,2),W=innerWidth,H=innerHeight,S=16;
+    [[rx,W,S],[ry,S,H]].forEach(function(o){var c=o[0];if(c.width!==o[1]*d||c.height!==o[2]*d){c.width=o[1]*d;c.height=o[2]*d;c.style.width=o[1]+"px";c.style.height=o[2]+"px"}});
+    var x=rx.getContext("2d");x.setTransform(d,0,0,d,0,0);x.clearRect(0,0,W,S);x.fillStyle="rgba(10,10,10,.82)";x.fillRect(0,0,W,S);
+    x.fillStyle="rgba(255,255,255,.28)";for(var i=0;i<W;i+=10){var big=i%100===0;x.fillRect(i,big?S-9:S-4,1,big?9:4)}
+    x.fillStyle="#777";x.font="8px ui-monospace,monospace";for(i=100;i<W;i+=100)x.fillText(i,i+3,8);
+    x.fillStyle="rgba(255,255,255,.16)";x.fillRect(0,S-1,W,1);if(mxp>=0){x.fillStyle="#f2501f";x.fillRect(mxp,0,1,S);x.fillText(Math.round(mxp),mxp+4,8)}
+    var y=ry.getContext("2d");y.setTransform(d,0,0,d,0,0);y.clearRect(0,0,S,H);y.fillStyle="rgba(10,10,10,.82)";y.fillRect(0,0,S,H);
+    var off=scrollY%10,off100=scrollY%100;y.fillStyle="rgba(255,255,255,.28)";
+    for(i=-off;i<H;i+=10){var yy=i+scrollY,bg=Math.round(yy)%100===0;y.fillRect(bg?S-9:S-4,i,bg?9:4,1)}
+    y.fillStyle="#777";y.font="8px ui-monospace,monospace";
+    for(i=100-off100;i<H;i+=100){y.save();y.translate(9,i+3);y.rotate(Math.PI/2);y.fillText(Math.round(i+scrollY),0,0);y.restore()}
+    y.fillStyle="rgba(255,255,255,.16)";y.fillRect(S-1,0,1,H);if(myp>=0){y.fillStyle="#f2501f";y.fillRect(0,myp,S,1)}}
+  var rq=0;function reqR(){if(!rq)rq=requestAnimationFrame(function(){rq=0;drawR()})}
+  addEventListener("pointermove",function(e){mxp=e.clientX;myp=e.clientY;if(fine){gX.style.transform="translateY("+myp+"px)";gY.style.transform="translateX("+mxp+"px)";gX.style.opacity=gY.style.opacity=1}reqR()},{passive:true});
+  document.addEventListener("pointerleave",function(){gX.style.opacity=gY.style.opacity=0});
+  addEventListener("scroll",reqR,{passive:true});addEventListener("resize",reqR);drawR();
+
+  var sel=el("div","eli-sel","<i></i><i></i><i></i><i></i><span></span><em></em>");if(fine)document.body.appendChild(sel);
+  var tag=sel.querySelector("span"),dim=sel.querySelector("em"),target=null;
+  var SEL="img,video,canvas,iframe,figure,h1,h2,h3,button,.fab,.eli-next a,.nav-pill,[class*=card],[class*=Card],[class*=stat],[class*=frame],[class*=tile],[class*=panel],.member,.act,.btn,blockquote,table";
+  function label(t){var n=t.tagName;
+    if(n==="IMG"){var f=(t.currentSrc||t.src||"").split("/").pop().split("?")[0];try{f=decodeURIComponent(f)}catch(_){}return "Image · "+f.slice(0,30)}
+    if(n==="VIDEO")return "Video";if(n==="CANVAS")return "Canvas";if(n==="IFRAME")return "Embed";
+    if(/^H[1-3]$/.test(n))return "Heading · "+n;if(n==="BUTTON"||/btn|fab/.test(t.className)||t.matches(".eli-next a"))return "Button";
+    if(t.classList.contains("nav-pill"))return "Nav · Auto layout";if(n==="FIGURE")return "Figure";
+    return /card/i.test(t.className)?"Card":/stat/.test(t.className)?"Metric":"Frame"}
+  function place(){if(!target)return;var r=target.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight||!r.width){sel.classList.remove("on");return}
+    sel.style.left=(r.left-4)+"px";sel.style.top=(r.top-4)+"px";sel.style.width=(r.width+8)+"px";sel.style.height=(r.height+8)+"px";dim.textContent=Math.round(r.width)+" × "+Math.round(r.height)}
+  document.addEventListener("pointerover",function(e){if(!fine)return;var t=e.target.closest&&e.target.closest(SEL);
+    if(t&&(t.id==="viewerImg"||t.id==="lbimg"||t.closest(".eli-veil,.lightbox,.lb,.viewer,[role=dialog],.site-header,.topbar")&&!t.classList.contains("nav-pill"))){t=null}
+    if(t){var r=t.getBoundingClientRect();if(r.width<40||r.height<20||(r.width>innerWidth*.98&&r.height>innerHeight*.9))t=null}
+    if(t===target)return;target=t;if(!t){sel.classList.remove("on");return}
+    tag.textContent=label(t);place();sel.classList.add("on")});
+  addEventListener("scroll",place,{passive:true});addEventListener("resize",place);
+
+  /* image loading: decode off the main thread, lazy below the fold */
+  document.querySelectorAll("img").forEach(function(im,i){im.decoding="async";if(!im.hasAttribute("loading")&&im.getBoundingClientRect().top>innerHeight*1.2)im.loading="lazy"});
+
+  /* leaving: native navigation (never blocked); the veil only decorates and clears itself if the page stays */
+  function veilIn(href){if(reduce)return;veil.querySelector(".t").textContent=/CV-project/.test(href)?"ELI.Z":"LOADING";
+    veil.classList.remove("out","ready");veil.classList.add("idle");void veil.offsetWidth;veil.classList.remove("idle");veil.classList.add("in");
+    setTimeout(function(){veil.classList.remove("in");veil.classList.add("out")},1600)}
+  document.addEventListener("click",function(e){var a=e.target.closest("a[href]");if(!a||e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;
+    if(a.target&&a.target!=="_self")return;var h=a.href;if(!/^https:\/\/cooleli\.github\.io\/(CV-project|Portfolio-page)\//.test(h))return;
+    if(a.getAttribute("href").charAt(0)==="#"||/\.(pdf|mp4|png|jpe?g|webp)(\?|$)/i.test(h))return;veilIn(h)});
+  addEventListener("pageshow",function(e){if(e.persisted){veil.classList.remove("in","idle");veil.classList.add("out")}});
+  /* ---------- in-page anchors: always scroll in place (works inside any preview frame, never reloads) ---------- */
+document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a||e.defaultPrevented)return;
+  var id=a.getAttribute("href").slice(1),t=id?document.getElementById(id):null;if(!id||id==="top"){e.preventDefault();scrollTo({top:0,behavior:"smooth"});return}
+  if(!t)return;e.preventDefault();var y=t.getBoundingClientRect().top+scrollY-(id==="top"?0:70);scrollTo({top:Math.max(0,y),behavior:"smooth"});
+  try{history.replaceState(null,"","#"+id)}catch(_){}});
+})();
+</script>
+</body>
+</html>
