@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bronze Heritage Gesture Interaction</title>
+<meta name="description" content="Bronze Heritage Gesture Interaction — five Chinese bronze treasures rebuilt as touchable particles. Wave, pinch and swipe through three thousand years.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" media="print" onload="this.media=\'all\'" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<link rel="stylesheet" href="styles-v2.css">
+<style id="eli-theme">/* ===== ELI.Z unified theme layer (matches CV homepage) ===== */
+:root{--red:#f2501f;--red-deep:#d9441a;--pink:#f2501f;--pink-deep:#d9441a;--accent:#f2501f;
+  --eli-red:#f2501f;--eli-glow:rgba(242,80,31,.45);--eli-line:rgba(255,255,255,.08);--eli-line2:rgba(255,255,255,.16);
+  --eli-sans:"PingFang SC","PingFang TC","苹方-简","Helvetica Neue","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;
+  --eli-dot:"Doto",ui-monospace,monospace;--eli-ease:cubic-bezier(.22,1,.36,1)}
+html{scroll-behavior:smooth}
+body{font-family:var(--eli-sans)}
+::selection{background:var(--eli-red);color:#fff}
+:focus-visible{outline:1px solid var(--eli-red)!important;outline-offset:3px}
+
+/* background layers, same as homepage */
+.eli-grid{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--eli-line) 1px,transparent 1px),linear-gradient(90deg,var(--eli-line) 1px,transparent 1px);
+  background-size:80px 80px;-webkit-mask-image:radial-gradient(ellipse at 50% 30%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 30%,#000 20%,transparent 75%);opacity:.45}
+.eli-scan{position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 3px)}
+.eli-glow{position:fixed;left:0;top:0;width:520px;height:520px;border-radius:50%;pointer-events:none;z-index:1;
+  background:radial-gradient(circle,rgba(255,255,255,.05),transparent 65%);transform:translate(-50%,-50%);opacity:0;transition:opacity .4s}
+
+/* ---------- header: homepage style ---------- */
+.site-header,.topbar{background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+  padding:14px clamp(18px,4vw,48px)!important;border-bottom:1px solid transparent;transition:background .4s,border-color .4s;pointer-events:none}
+.site-header.eli-scrolled,.topbar.eli-scrolled{background:rgba(5,5,5,.72)!important;-webkit-backdrop-filter:blur(14px)!important;backdrop-filter:blur(14px)!important;border-color:var(--eli-line)}
+.header-inner,.topbar-inner{max-width:none!important;display:flex!important;align-items:center;justify-content:space-between;gap:16px;pointer-events:auto}
+.nav-center{display:flex!important;align-items:center;gap:22px;min-width:0;flex:1 1 auto}
+.site-header .brand,.topbar .brand{display:none!important}
+.eli-brand{display:inline-flex;align-items:baseline;gap:10px;font-family:var(--eli-dot);font-weight:800;font-size:22px;letter-spacing:.04em;color:#fff;text-decoration:none;white-space:nowrap;flex:0 0 auto}
+.eli-brand b{color:var(--eli-red)}
+.eli-brand small{font-size:12px;letter-spacing:.18em;color:#777;font-weight:800}
+.eli-brand:hover small{color:var(--eli-red)}
+.nav-pill{height:auto!important;background:#f2f2f2!important;border:0!important;border-radius:8px!important;box-shadow:none!important;padding:4px!important;gap:2px!important;margin:0 auto!important;flex:0 1 auto!important;width:auto!important}
+.nav-pill .nav-link,.nav-pill a.nl,.nav-pill a{font-family:var(--eli-dot)!important;font-weight:800!important;font-size:14px!important;letter-spacing:.02em!important;
+  padding:7px 14px!important;border-radius:6px;color:#555!important;transition:color .3s,background .3s}
+.nav-pill .nav-link::after,.nav-pill a.nl::after,.nav-pill a::before{display:none!important}
+.nav-pill a:hover{color:#000!important}
+.nav-pill a.active,.nav-pill a.on{color:#fff!important;background:#000!important}
+.eli-tools{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.lang-toggle,.site-header .lang{display:flex!important;align-items:stretch;height:auto!important;background:transparent!important;border:1px solid var(--eli-line2)!important;border-radius:6px!important;box-shadow:none!important;padding:0!important;overflow:hidden}
+.lang .knob{display:none!important}
+.lang-toggle button,.site-header .lang button{font-family:var(--eli-dot)!important;font-weight:800!important;font-size:13px!important;background:none!important;border:0!important;border-radius:0!important;color:#a3a3a6!important;opacity:1!important;padding:7px 12px!important;cursor:pointer;transition:background .25s,color .25s}
+.lang-toggle button.active,.lang-toggle button.on,.site-header .lang button.on{background:#fff!important;color:#000!important}
+/* back home button lives in header */
+.eli-home{display:flex;align-items:center;gap:12px;font-family:var(--eli-dot);font-weight:800;font-size:14px;padding:4px 16px 4px 4px;border-radius:8px;background:#111;border:1px solid var(--eli-line2);color:#fff;text-decoration:none;white-space:nowrap;transition:all .3s var(--eli-ease)}
+.eli-home i{width:30px;height:30px;border-radius:6px;display:grid;place-items:center;background:#000;border:1px solid var(--eli-line2);font-style:normal;transition:background .3s,transform .3s var(--eli-ease)}
+.eli-home:hover{border-color:var(--eli-red);box-shadow:0 0 24px var(--eli-glow)}
+.eli-home:hover i{background:var(--eli-red);border-color:var(--eli-red);transform:translateX(-2px)}
+.fab-home{display:none!important}
+@media (max-width:900px){.nav-pill{display:none!important}.eli-brand small{display:none}}
+@media (max-width:520px){.eli-home span{display:none}.eli-home{padding:4px}}
+
+/* floating buttons: homepage square style */
+.fab{border-radius:8px!important;background:#111!important;color:#fff!important;border:1px solid var(--eli-line2)!important;box-shadow:none!important;font-family:var(--eli-dot)!important;font-weight:800!important;transition:all .3s var(--eli-ease)!important}
+.fab:hover{background:#111!important;border-color:var(--eli-red)!important;box-shadow:0 0 24px var(--eli-glow)!important;color:#fff!important}
+.fab i,.fab svg{color:var(--eli-red)}
+
+/* generic button feedback */
+button,.fab,.eli-home,.eli-next a,a[class*="btn"]{-webkit-tap-highlight-color:transparent}
+button:active,.fab:active,.eli-home:active,a[class*="btn"]:active{transform:scale(.97)}
+.eli-ping{position:fixed;width:10px;height:10px;border:1px solid var(--eli-red);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);animation:eliPing .5s var(--eli-ease) forwards}
+@keyframes eliPing{to{width:46px;height:46px;opacity:0}}
+
+/* design-software chrome: rulers, guides, inspector */
+.eli-rx,.eli-ry{position:fixed;left:0;top:0;z-index:58;pointer-events:none}
+.eli-ry{top:16px}
+.eli-gx,.eli-gy{position:fixed;z-index:39;pointer-events:none;opacity:0;transition:opacity .3s}
+.eli-gx{left:16px;right:0;top:0;height:0;border-top:1px dashed rgba(242,80,31,.32)}
+.eli-gy{top:16px;bottom:0;left:0;width:0;border-left:1px dashed rgba(242,80,31,.32)}
+html.eli-chrome .site-header,html.eli-chrome .topbar{padding-top:24px!important;padding-left:calc(16px + clamp(18px,4vw,48px))!important}
+.eli-sel{position:fixed;pointer-events:none;z-index:57;border:1px solid var(--eli-red);opacity:0;transition:opacity .2s,left .18s var(--eli-ease),top .18s var(--eli-ease),width .18s var(--eli-ease),height .18s var(--eli-ease)}
+.eli-sel.on{opacity:1}
+.eli-sel i{position:absolute;width:7px;height:7px;background:#fff;border:1px solid var(--eli-red)}
+.eli-sel i:nth-child(1){left:-4px;top:-4px}.eli-sel i:nth-child(2){right:-4px;top:-4px}.eli-sel i:nth-child(3){left:-4px;bottom:-4px}.eli-sel i:nth-child(4){right:-4px;bottom:-4px}
+.eli-sel span{position:absolute;left:-1px;top:-21px;font:10.5px/1 ui-monospace,monospace;background:var(--eli-red);color:#fff;padding:4px 6px;white-space:nowrap}
+.eli-sel em{position:absolute;left:50%;bottom:-22px;transform:translateX(-50%);font:10.5px/1 ui-monospace,monospace;font-style:normal;background:var(--eli-red);color:#fff;border-radius:3px;padding:4px 6px;white-space:nowrap}
+
+/* progress + HUD */
+.eli-progress{position:fixed;left:0;top:0;height:2px;width:0;background:var(--eli-red);z-index:200;box-shadow:0 0 10px var(--eli-glow)}
+.eli-hud{position:fixed;left:calc(16px + clamp(14px,2.4vw,26px));bottom:clamp(14px,2.4vw,26px);z-index:55;font:11px/1.5 ui-monospace,monospace;color:#666;letter-spacing:.06em;pointer-events:none}
+.eli-hud b{color:#ddd;font-weight:400}.eli-hud .d{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--eli-red);margin-right:6px;box-shadow:0 0 8px var(--eli-red);animation:eliBlink 1.6s infinite}
+@keyframes eliBlink{50%{opacity:.25}}
+@media (max-width:700px){.eli-hud{display:none}}
+
+/* next project bar */
+.eli-next{position:relative;z-index:3;display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:stretch;padding:40px clamp(18px,4vw,48px) 30px;border-top:1px solid var(--eli-line);background:#050505;margin-top:60px}
+.eli-next a{display:flex;flex-direction:column;gap:8px;padding:22px 24px;border:1px solid var(--eli-line);border-radius:10px;background:#0c0c0d;color:#f5f5f5;text-decoration:none;position:relative;overflow:hidden;transition:border-color .35s,box-shadow .35s}
+.eli-next a::before{content:"";position:absolute;inset:0;background:radial-gradient(400px circle at var(--x,50%) var(--y,50%),rgba(242,80,31,.16),transparent 60%);opacity:0;transition:opacity .35s}
+.eli-next a:hover{border-color:var(--eli-red);box-shadow:0 0 30px rgba(242,80,31,.18)}
+.eli-next a:hover::before{opacity:1}
+.eli-next small{font-family:var(--eli-dot);font-weight:800;font-size:12px;letter-spacing:.24em;color:var(--eli-red)}
+.eli-next strong{font-family:var(--eli-dot);font-weight:800;font-size:clamp(18px,2vw,26px);letter-spacing:.02em}
+.eli-next .nx{text-align:right;align-items:flex-end}
+.eli-next .hm{justify-content:center;align-items:center;min-width:140px}
+.eli-next .hm strong{font-size:16px}
+.eli-foot{position:relative;z-index:3;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 24px;padding:18px clamp(18px,4vw,48px) 26px;background:#050505;color:#5f5f63;font-size:12px}
+.eli-foot .d{font-family:var(--eli-dot);font-weight:800;letter-spacing:.1em}
+@media (max-width:760px){.eli-next{grid-template-columns:1fr 1fr}.eli-next .hm{grid-column:1/-1;order:3}}
+
+/* page transition, same language as the homepage splash */
+.eli-veil{position:fixed;inset:0;z-index:9999;background:#000;display:grid;place-items:center;transition:transform .6s var(--eli-ease)}
+.eli-veil.out{transform:translateY(-100%)}
+.eli-veil.idle{transform:translateY(100%);transition:none}
+.eli-veil.in{transform:translateY(0)}
+.eli-veil .t{font-family:var(--eli-dot);font-weight:900;font-size:clamp(34px,6vw,78px);color:#fff;letter-spacing:.02em;text-align:center;line-height:1.05;padding:0 20px}
+.eli-veil .l{font-family:var(--eli-dot);font-weight:800;font-size:12px;letter-spacing:.4em;color:#777;margin-top:14px;text-align:center}
+.eli-veil .b{width:200px;height:2px;background:#222;margin:18px auto 0;overflow:hidden}
+.eli-veil .b i{display:block;height:100%;width:0;background:var(--eli-red);transition:width .45s var(--eli-ease)}
+.eli-veil.ready .b i{width:100%}
+@media (prefers-reduced-motion:reduce){.eli-veil{display:none}}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+
+<header class="site-header" id="top">
+  <div class="header-inner">
+    <div class="nav-center">
+    <a class="brand" href="#top" aria-label="Bronze Ware — back to top"><span class="dot" aria-hidden="true"></span>BRONZE&nbsp;WARE</a>
+    <nav class="nav-pill" aria-label="Primary">
+      <a class="nav-link active" href="#intro" data-nav="intro"><span data-en="Intro" data-zh="介绍">Intro</span></a>
+      <a class="nav-link" href="#demo" data-nav="demo"><span data-en="Demo" data-zh="演示">Demo</span></a>
+      <a class="nav-link" href="#video" data-nav="video"><span data-en="Video" data-zh="视频">Video</span></a>
+    </nav>
+  </div>
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button type="button" data-lang="en" class="active">EN</button><button type="button" data-lang="zh">中</button>
+    </div>
+  </div>
+</header>
+
+<!-- 返回首页：占位按钮，固定右上角；跳转目标页未定，暂不接任何跳转 -->
+<a class="fab fab-home" href="https://cooleli.github.io/CV-project/v2/#projects" aria-label="Back home"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3z"/></svg><span data-en="Back home" data-zh="返回首页">Back home</span></a>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="hero wrap">
+    <div class="hero-panel reveal">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-kicker" data-en="Heritage × Gesture Interaction" data-zh="遗产 × 手势交互">Heritage × Gesture Interaction</div>
+      <h1 class="hero-title" id="heroTitle">
+        <span class="ht-line" data-en="Bronze Heritage" data-zh="青铜器">Bronze Heritage</span>
+        <span class="ht-line" data-en="Gesture Interaction" data-zh="手势交互">Gesture Interaction</span>
+      </h1>
+      <p class="hero-sub" data-en="Five Chinese bronze treasures, rebuilt as clouds of touchable particles. Wave, pinch and swipe your way through three thousand years — no headset, no controller, just your hands." data-zh="五件中国青铜重器，被重建成可触碰的粒子云。挥挥手、捏一捏，穿越三千年——不用头显，不用手柄，只要你的双手。">Five Chinese bronze treasures, rebuilt as clouds of touchable particles. Wave, pinch and swipe your way through three thousand years — no headset, no controller, just your hands.</p>
+    </div>
+          <div class="hero-scroll"><span data-en="Scroll" data-zh="下滑">Scroll</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></div>
+  </section>
+
+  <div class="wrap">
+    <!-- ================= 1 · PROJECT INTRODUCTION ================= -->
+    <section class="section" id="intro">
+      <div class="section-kicker" data-en="01 · Project introduction" data-zh="01 · 项目介绍">01 · Project introduction</div>
+      <h2 data-en="Ancient bronze, played with bare hands." data-zh="徒手把玩三千年青铜。">Ancient bronze, played with bare hands.</h2>
+      <p class="section-intro" data-en="Bronze Ware Interaction is a browser-based digital heritage experiment. Five famous Chinese bronze vessels were rebuilt as clouds of GPU particles — reach in with your bare hands, and the bronze melts, bursts apart and pulls itself back together." data-zh="「青铜器交互」是一个跑在浏览器里的数字遗产实验。五件中国青铜重器被重建成 GPU 粒子云——伸出双手，青铜在你的手势里融化、爆开、再自己拼回来。">Bronze Ware Interaction is a browser-based digital heritage experiment. Five famous Chinese bronze vessels were rebuilt as clouds of GPU particles — reach in with your bare hands, and the bronze melts, bursts apart and pulls itself back together.</p>
+      <p class="section-intro" data-en="Under the hood: <strong>Three.js</strong> + <strong>GPU particles</strong> + <strong>MediaPipe</strong> hand tracking — no markers, no gloves, all in the browser." data-zh="技术上就是一个普通网页：<strong>Three.js</strong>＋<strong>GPU 粒子</strong>＋<strong>MediaPipe</strong> 手势追踪——不用标记点，不用戴手套，全在浏览器里。">Under the hood: <strong>Three.js</strong> + <strong>GPU particles</strong> + <strong>MediaPipe</strong> hand tracking — no markers, no gloves, all in the browser.</p>
+
+            <div class="subhead" data-en="How to play" data-zh="玩法">How to play</div>
+      <div class="deck">
+        <div class="deck-col">
+          <div class="deck-head">
+            <span class="deck-mode" data-en="GESTURE" data-zh="手势">GESTURE</span>
+            <span class="deck-sub" data-en="Talk to bronze with your hands" data-zh="直接用手跟青铜器“说话”">Talk to bronze with your hands</span>
+          </div>
+          <div class="deck-row">
+            <span class="deck-idx">01</span>
+            <span class="deck-act" data-en="Wave" data-zh="挥手">Wave</span>
+            <span class="deck-rule" aria-hidden="true"></span>
+            <span class="deck-res" data-en="switch bronze" data-zh="切换青铜器">switch bronze</span>
+          </div>
+          <div class="deck-row">
+            <span class="deck-idx">02</span>
+            <span class="deck-act" data-en="Swipe up / down" data-zh="上下挥">Swipe up / down</span>
+            <span class="deck-rule" aria-hidden="true"></span>
+            <span class="deck-res" data-en="melt / rebuild" data-zh="融化 / 复原">melt / rebuild</span>
+          </div>
+          <div class="deck-row">
+            <span class="deck-idx">03</span>
+            <span class="deck-act" data-en="Pinch + drag" data-zh="捏住拖动">Pinch + drag</span>
+            <span class="deck-rule" aria-hidden="true"></span>
+            <span class="deck-res" data-en="rotate" data-zh="旋转">rotate</span>
+          </div>
+          <div class="deck-row">
+            <span class="deck-idx">04</span>
+            <span class="deck-act" data-en="Quick pinch" data-zh="快捏">Quick pinch</span>
+            <span class="deck-rule" aria-hidden="true"></span>
+            <span class="deck-res" data-en="explode" data-zh="爆开">explode</span>
+          </div>
+          <div class="deck-row">
+            <span class="deck-idx">05</span>
+            <span class="deck-act" data-en="Two hands" data-zh="双手开合">Two hands</span>
+            <span class="deck-rule" aria-hidden="true"></span>
+            <span class="deck-res" data-en="zoom" data-zh="缩放">zoom</span>
+          </div>
+          <p class="deck-note"><i class="fa-solid fa-camera" aria-hidden="true"></i><span data-en="Tap GESTURE in the demo and allow camera access — the AI needs to see your hands. Video stays local." data-zh="在演示里点 GESTURE 并允许摄像头——AI 得先看见你的手。画面只在本地处理。">Tap GESTURE in the demo and allow camera access — the AI needs to see your hands. Video stays local.</span></p>
+        </div>
+        <div class="deck-col">
+          <div class="deck-head">
+            <span class="deck-mode" data-en="MOUSE" data-zh="鼠标">MOUSE</span>
+            <span class="deck-sub" data-en="No camera? Mouse works too" data-zh="没摄像头？鼠标也行">No camera? Mouse works too</span>
+          </div>
+          <div class="deck-row">
+            <span class="deck-idx">01</span>
+            <span class="deck-act" data-en="Drag" data-zh="拖拽">Drag</span>
+            <span class="deck-rule" aria-hidden="true"></span>
+            <span class="deck-res" data-en="rotate" data-zh="旋转">rotate</span>
+          </div>
+          <div class="deck-row">
+            <span class="deck-idx">02</span>
+            <span class="deck-act" data-en="Scroll" data-zh="滚轮">Scroll</span>
+            <span class="deck-rule" aria-hidden="true"></span>
+            <span class="deck-res" data-en="zoom" data-zh="缩放">zoom</span>
+          </div>
+          <div class="deck-row">
+            <span class="deck-idx">03</span>
+            <span class="deck-act" data-en="Hover" data-zh="悬停">Hover</span>
+            <span class="deck-rule" aria-hidden="true"></span>
+            <span class="deck-res" data-en="melt surface" data-zh="融化表面">melt surface</span>
+          </div>
+          <div class="deck-row">
+            <span class="deck-idx">04</span>
+            <span class="deck-act" data-en="Click" data-zh="单击">Click</span>
+            <span class="deck-rule" aria-hidden="true"></span>
+            <span class="deck-res" data-en="explode" data-zh="爆开">explode</span>
+          </div>
+          <div class="deck-row">
+            <span class="deck-idx">05</span>
+            <span class="deck-act" data-en="Space" data-zh="空格">Space</span>
+            <span class="deck-rule" aria-hidden="true"></span>
+            <span class="deck-res" data-en="switch states" data-zh="切换形态">switch states</span>
+          </div>
+          <p class="deck-note"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i><span data-en="Every gesture has a mouse equivalent — but hand tracking is the star." data-zh="每个手势都有鼠标对应操作——但手势追踪才是主角。">Every gesture has a mouse equivalent — but hand tracking is the star.</span></p>
+        </div>
+      </div>
+
+      <div class="subhead" data-en="Why build this" data-zh="为什么做这个">Why build this</div>
+      <p class="why-lead" data-en="The real bronzes sleep in climate-controlled vaults — behind glass, under low light: preserved, and untouchable. Every human touch leaves oils and salts that corrode three millennia of patina." data-zh="真正的青铜器沉睡在恒温恒湿的库房里——隔着玻璃、压着照度：被保护着，也被隔绝着。人的每一次触碰，都会把油脂和盐分留在三千年的包浆上。">The real bronzes sleep in climate-controlled vaults — behind glass, under low light: preserved, and untouchable. Every human touch leaves oils and salts that corrode three millennia of patina.</p>
+      <div class="why-grid">
+        <div class="why-cell">
+          <div class="why-k" data-en="PRESERVATION" data-zh="保护">PRESERVATION</div>
+          <p data-en="Protection has always meant distance: the more precious the vessel, the further hands must stay. Particles break the dilemma — bronze can be melted, scattered and held, yet never worn, never harmed." data-zh="保护从来意味着疏远：器物越珍贵，双手必须离得越远。粒子打破了这道两难——青铜可以被融化、打散、捧起，却永远不会被磨损、被伤害。">Protection has always meant distance: the more precious the vessel, the further hands must stay. Particles break the dilemma — bronze can be melted, scattered and held, yet never worn, never harmed.</p>
+        </div>
+        <div class="why-cell">
+          <div class="why-k" data-en="EMBODIMENT" data-zh="具身">EMBODIMENT</div>
+          <p data-en="A gesture is not a button press. To wave, pinch and cradle is to lend the bronze your body — its weight, rhythm, hesitation. The interface dissolves; what remains is an encounter." data-zh="手势不是按键。挥手、捏合、捧起，是把身体借给青铜——它的重量、节奏、迟疑。界面消融了，剩下的是一场相遇。">A gesture is not a button press. To wave, pinch and cradle is to lend the bronze your body — its weight, rhythm, hesitation. The interface dissolves; what remains is an encounter.</p>
+        </div>
+        <div class="why-cell">
+          <div class="why-k" data-en="ACCESS" data-zh="普及">ACCESS</div>
+          <p data-en="No headset, no install, no ticket. A web page is the most democratic gallery hall — anyone with a browser and a camera can stand before three thousand years." data-zh="不用头显，不用安装，不用门票。网页是最民主的展厅——任何有浏览器和摄像头的人，都能站在三千年面前。">No headset, no install, no ticket. A web page is the most democratic gallery hall — anyone with a browser and a camera can stand before three thousand years.</p>
+        </div>
+        <div class="why-cell">
+          <div class="why-k" data-en="RESEARCH" data-zh="研究">RESEARCH</div>
+          <p data-en="Beneath the play sits the question I carry into doctoral work: how embodied interaction turns looking into encountering. Eyes observe. Hands remember." data-zh="嬉戏之下，是我要带进博士阶段研究的问题：具身交互如何把“观看”变成“相遇”。眼睛负责观看，手负责记住。">Beneath the play sits the question I carry into doctoral work: how embodied interaction turns looking into encountering. Eyes observe. Hands remember.</p>
+        </div>
+      </div>
+
+      <div class="subhead" data-en="The five bronzes" data-zh="五件青铜器">The five bronzes</div>
+      <div class="car-head">
+      <div class="stack-toggle" id="stackToggle" role="tablist" aria-label="Bronze state">
+        <button class="st-btn on" data-s="particle" role="tab" aria-selected="true"><span data-en="Particles" data-zh="粒子态">Particles</span></button>
+        <button class="st-btn" data-s="solid" role="tab" aria-selected="false"><span data-en="Solid" data-zh="实体态">Solid</span></button>
+      </div>
+        <div class="car-ctrl">
+          <span class="car-count" id="carCount">01 / 05</span>
+          <button class="car-btn" id="carPrev" aria-label="Previous bronze">←</button>
+          <button class="car-btn" id="carNext" aria-label="Next bronze">→</button>
+        </div>
+      </div>
+      <div class="car-track" id="carTrack">
+      <div class="car-card">
+        <div class="sc-media">
+          <img class="sc-p" src="bronze-particle-gui.webp" alt="" aria-hidden="true">
+          <img class="sc-s" src="bronze-solid-gui.webp" alt="" aria-hidden="true">
+        <div class="sc-wipe">
+            <div class="sc-wipe-line"></div>
+            <button class="sc-wipe-knob" aria-label="Drag to morph between particle and solid">⇔</button>
+          </div>
+        </div>
+        <div class="sc-meta">
+          <div class="sc-no">01</div>
+          <div class="sc-name" data-en="Wu Wang Zheng Shang Gui" data-zh="武王征商簋">Wu Wang Zheng Shang Gui</div>
+          <div class="sc-era" data-en="Early Western Zhou · c. 11th c. BC" data-zh="西周早期 · 约公元前11世纪">Early Western Zhou · c. 11th c. BC</div>
+          <div class="sc-one" data-en="A bronze vessel that records the major historical event of “King Wu's Conquest of Shang”." data-zh="一件记载了“武王伐纣”这一重大历史事件的青铜器。">A bronze vessel that records the major historical event of “King Wu's Conquest of Shang”.</div>
+        </div>
+      </div>
+      <div class="car-card">
+        <div class="sc-media">
+          <img class="sc-p" src="bronze-particle-bianzhong.webp" alt="" aria-hidden="true">
+          <img class="sc-s" src="bronze-solid-bianzhong.webp" alt="" aria-hidden="true">
+        <div class="sc-wipe">
+            <div class="sc-wipe-line"></div>
+            <button class="sc-wipe-knob" aria-label="Drag to morph between particle and solid">⇔</button>
+          </div>
+        </div>
+        <div class="sc-meta">
+          <div class="sc-no">02</div>
+          <div class="sc-name" data-en="Zeng Hou Yi Bian Zhong" data-zh="曾侯乙编钟">Zeng Hou Yi Bian Zhong</div>
+          <div class="sc-era" data-en="Early Warring States · c. 433 BC" data-zh="战国早期 · 约公元前433年">Early Warring States · c. 433 BC</div>
+          <div class="sc-one" data-en="A national treasure that rewrote the history of world music and represents the peak of pre-Qin ritual and music civilization." data-zh="一套改写世界音乐史、代表先秦礼乐文明巅峰的国之重器。">A national treasure that rewrote the history of world music and represents the peak of pre-Qin ritual and music civilization.</div>
+        </div>
+      </div>
+      <div class="car-card">
+        <div class="sc-media">
+          <img class="sc-p" src="bronze-particle-jue.webp" alt="" aria-hidden="true">
+          <img class="sc-s" src="bronze-solid-jue.webp" alt="" aria-hidden="true">
+        <div class="sc-wipe">
+            <div class="sc-wipe-line"></div>
+            <button class="sc-wipe-knob" aria-label="Drag to morph between particle and solid">⇔</button>
+          </div>
+        </div>
+        <div class="sc-meta">
+          <div class="sc-no">03</div>
+          <div class="sc-name" data-en="Erlitou Bronze Jue with Nipple Pattern" data-zh="二里头乳钉纹青铜爵">Erlitou Bronze Jue with Nipple Pattern</div>
+          <div class="sc-era" data-en="Late Xia · c. 1600 BC" data-zh="夏代晚期 · 约公元前1600年">Late Xia · c. 1600 BC</div>
+          <div class="sc-one" data-en="Known as the “First Jue of China”, the pioneering work of Chinese bronze ritual vessels." data-zh="被誉为“华夏第一爵”，是中国青铜礼器的开山之作。">Known as the “First Jue of China”, the pioneering work of Chinese bronze ritual vessels.</div>
+        </div>
+      </div>
+      <div class="car-card">
+        <div class="sc-media">
+          <img class="sc-p" src="bronze-particle-ding.webp" alt="" aria-hidden="true">
+          <img class="sc-s" src="bronze-solid-ding.webp" alt="" aria-hidden="true">
+        <div class="sc-wipe">
+            <div class="sc-wipe-line"></div>
+            <button class="sc-wipe-knob" aria-label="Drag to morph between particle and solid">⇔</button>
+          </div>
+        </div>
+        <div class="sc-meta">
+          <div class="sc-no">04</div>
+          <div class="sc-name" data-en="Hou Si Mu Wu Ding" data-zh="后司母戊鼎">Hou Si Mu Wu Ding</div>
+          <div class="sc-era" data-en="Late Shang · c. 14th–11th c. BC" data-zh="商代后期 · 约公元前14–11世纪">Late Shang · c. 14th–11th c. BC</div>
+          <div class="sc-one" data-en="The largest and heaviest bronze ritual vessel in the world, the pinnacle of Shang Dynasty bronze casting." data-zh="世界上出土最大、最重的青铜礼器，商代青铜铸造的巅峰。">The largest and heaviest bronze ritual vessel in the world, the pinnacle of Shang Dynasty bronze casting.</div>
+        </div>
+      </div>
+      <div class="car-card">
+        <div class="sc-media">
+          <img class="sc-p" src="bronze-particle-zun.webp" alt="" aria-hidden="true">
+          <img class="sc-s" src="bronze-solid-zun.webp" alt="" aria-hidden="true">
+        <div class="sc-wipe">
+            <div class="sc-wipe-line"></div>
+            <button class="sc-wipe-knob" aria-label="Drag to morph between particle and solid">⇔</button>
+          </div>
+        </div>
+        <div class="sc-meta">
+          <div class="sc-no">05</div>
+          <div class="sc-name" data-en="Four-Ram Square Zun" data-zh="四羊方尊">Four-Ram Square Zun</div>
+          <div class="sc-era" data-en="Late Shang · c. 14th–11th c. BC" data-zh="商代后期 · 约公元前14–11世纪">Late Shang · c. 14th–11th c. BC</div>
+          <div class="sc-one" data-en="The “masterpiece” of Shang bronze ware, decorated with four rams, showcasing extremely high casting craftsmanship." data-zh="商代青铜器中的“臻品”，以四羊为饰，展现了极高的铸造工艺。">The “masterpiece” of Shang bronze ware, decorated with four rams, showcasing extremely high casting craftsmanship.</div>
+        </div>
+      </div>
+      </div>
+      <div class="car-dots" id="carDots">
+        <button class="on" aria-label="Bronze 1"></button><button aria-label="Bronze 2"></button><button aria-label="Bronze 3"></button><button aria-label="Bronze 4"></button><button aria-label="Bronze 5"></button>
+      </div>
+      <div class="rule"></div>
+    </section>
+
+    <!-- ================= 2 · INTERACTIVE DEMO ================= -->
+    <section class="section" id="demo">
+      <div class="section-kicker" data-en="02 · Interactive demo" data-zh="02 · 交互演示">02 · Interactive demo</div>
+      <h2 data-en="Try it right here." data-zh="直接在这里试。">Try it right here.</h2>
+      <p class="section-intro" data-en="The live prototype in a small window — go fullscreen anytime, it keeps running." data-zh="线上原型嵌在小窗里——随时可切全屏，演示会继续跑。">The live prototype in a small window — go fullscreen anytime, it keeps running.</p>
+      <div class="demo-tip" role="note">
+        <i class="fa-solid fa-lightbulb" aria-hidden="true"></i>
+        <p data-en="<b>Before you play:</b> the 3D models take about 1–2 minutes to load on your first visit — give it a moment. To try gesture control, tap <b>GESTURE</b> inside the demo and allow camera access when your browser asks." data-zh="<b>开始前请注意：</b>模型首次加载约需 1–2 分钟，请耐心稍等。想体验手势操作，在演示中点<b>手势</b>按钮，并在浏览器弹出请求时允许使用摄像头。"><b>Before you play:</b> the 3D models take about 1–2 minutes to load on your first visit — give it a moment. To try gesture control, tap <b>GESTURE</b> inside the demo and allow camera access when your browser asks.</p>
+      </div>
+      <div class="experience-frame-wrap" id="experienceWrap">
+        <div class="experience-frame">
+          <iframe class="experience-iframe" id="experienceIframe" title="Bronze Ware Interaction — live demo"
+            src="https://cooleli.github.io/Bronze-Ware-Interaction/"
+            allow="camera; microphone; fullscreen" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="experience-controls">
+          <button class="experience-btn" id="experienceEnterFs" type="button">
+            <i class="fa-solid fa-expand" aria-hidden="true"></i>
+            <span data-en="Enter fullscreen" data-zh="全屏">Enter fullscreen</span>
+          </button>
+          <button class="experience-btn" id="experienceExitFs" type="button" hidden>
+            <i class="fa-solid fa-compress" aria-hidden="true"></i>
+            <span data-en="Exit fullscreen" data-zh="退出全屏">Exit fullscreen</span>
+          </button>
+          <button class="experience-btn" id="experienceOpenExternal" type="button">
+            <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+            <span data-en="Open in new tab" data-zh="在新标签页打开">Open in new tab</span>
+          </button>
+        </div>
+      </div>
+      <p class="demo-note"><i class="fa-solid fa-circle-info" aria-hidden="true"></i><span data-en="Gesture mode needs a camera and a desktop browser. On phones or without a camera, the mouse controls above work just fine." data-zh="手势模式需要摄像头和桌面浏览器。手机或没有摄像头时，用上面的鼠标操作一样能玩。">Gesture mode needs a camera and a desktop browser. On phones or without a camera, the mouse controls above work just fine.</span></p>
+      <div class="rule"></div>
+    </section>
+
+    <!-- ================= 3 · DEMO VIDEO ================= -->
+    <section class="section" id="video">
+      <div class="section-kicker" data-en="03 · Demo video" data-zh="03 · 演示视频">03 · Demo video</div>
+      <h2 data-en="Watch it in action." data-zh="看它动起来。">Watch it in action.</h2>
+      <p class="section-intro" data-en="A recorded walkthrough of the full interaction — gestures, particle bursts and all five bronzes." data-zh="完整交互过程的录屏——手势、粒子爆破，五件青铜器都在里面。">A recorded walkthrough of the full interaction — gestures, particle bursts and all five bronzes.</p>
+      <div class="video-frame">
+        <video controls playsinline preload="metadata"
+          src="https://raw.githubusercontent.com/CoolEli/Bronze-Ware-Interaction/main/public/videos/bronze-ware-interaction-demo.mp4">
+          <span data-en="Your browser does not support the video tag." data-zh="你的浏览器不支持 video 标签。">Your browser does not support the video tag.</span>
+        </video>
+      </div>
+      <p class="video-note" data-en="Source: Bronze-Ware-Interaction repository · public/videos/bronze-ware-interaction-demo.mp4" data-zh="来源：Bronze-Ware-Interaction 仓库 · public/videos/bronze-ware-interaction-demo.mp4">Source: Bronze-Ware-Interaction repository · public/videos/bronze-ware-interaction-demo.mp4</p>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <span data-en="Bronze Heritage Gesture Interaction" data-zh="青铜器手势交互">Bronze Heritage Gesture Interaction</span>
+  <span data-en="Three.js · GPU Particles · MediaPipe" data-zh="Three.js · GPU 粒子 · MediaPipe">Three.js · GPU Particles · MediaPipe</span>
+</footer>
+
+<div class="fab-stack">
+  <button class="fab" id="backToTop" type="button" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+    <span data-en="Back to top" data-zh="返回顶部">Back to top</span>
+  </button>
+</div>
+
+<script src="scripts/app.js"></script>
+<script>window.ELI_PAGE={id:"bronze"};
+/* ===== ELI.Z unified theme layer: header, transitions, interactions ===== */
+(function(){
+  var HOME="https://cooleli.github.io/CV-project/v2/";
+  var BASE="https://cooleli.github.io/Portfolio-page/";
+  var LIST=[
+    {id:"bronze",en:"Bronze Ware",zh:"青铜器手势交互",p:"Bronze%20Heritage%20Gesture%20Interaction%20project/"},
+    {id:"dunhuang",en:"Stone Reveal",zh:"敦煌互动遗产",p:"Dunhuang%20Interactive%20Heritage%20project/"},
+    {id:"mr",en:"RV × MR",zh:"MR 房车内饰定制",p:"MR%20RV%20Interior%20Customization%20project/"},
+    {id:"app",en:"Jiuli APP",zh:"九里 APP 交互设计",p:"APP%20Interaction%20Design%20project/"},
+    {id:"product",en:"Product Design",zh:"产品设计",p:"Product%20Design%20project/"}];
+  var me=window.ELI_PAGE||{id:"bronze"},idx=0;LIST.forEach(function(x,i){if(x.id===me.id)idx=i});
+  var cur=LIST[idx],prev=LIST[(idx+LIST.length-1)%LIST.length],next=LIST[(idx+1)%LIST.length];
+  var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+  function zh(){return /^zh/.test(document.documentElement.lang)||document.documentElement.classList.contains("zh")}
+  function bi(en,z){return '<span data-en="'+en+'" data-zh="'+z+'">'+en+'</span>'}
+
+  /* veil: enter animation */
+  var veil=el("div","eli-veil",'<div><div class="t">'+cur.en.toUpperCase()+'</div><div class="l">ELI.Z / PROJECT '+String(idx+1).padStart(2,"0")+'</div><div class="b"><i></i></div></div>');
+  document.body.appendChild(veil);
+  requestAnimationFrame(function(){veil.classList.add("ready")});
+  setTimeout(function(){veil.classList.add("out")},reduce?0:480);
+
+  /* background layers */
+  ["eli-grid","eli-scan"].forEach(function(c){document.body.insertBefore(el("div",c),document.body.firstChild)});
+  var glow=el("div","eli-glow");document.body.appendChild(glow);
+  var prog=el("div","eli-progress");document.body.appendChild(prog);
+
+  /* header: brand + tools */
+  var hdr=document.querySelector(".site-header,.topbar");
+  if(hdr){
+    var inner=hdr.querySelector(".header-inner,.topbar-inner")||hdr;
+    var center=inner.querySelector(".nav-center")||inner;
+    var brand=el("a","eli-brand",'ELI<b>.</b>Z<small>/ '+cur.en.toUpperCase()+'</small>');brand.href=HOME;brand.setAttribute("aria-label","Eli Zeng — home");
+    center.insertBefore(brand,center.firstChild);
+    var tools=el("div","eli-tools");
+    var lang=inner.querySelector(".lang-toggle,.lang");if(lang)tools.appendChild(lang);
+    var home=el("a","eli-home",'<i>‹</i>'+bi("Home","返回首页"));home.href=HOME+"#projects";
+    tools.appendChild(home);inner.appendChild(tools);
+    addEventListener("scroll",function(){hdr.classList.toggle("eli-scrolled",scrollY>40)},{passive:true});
+  }
+
+  /* next / previous project + footer */
+  var nav=el("nav","eli-next",
+    '<a class="pv" href="'+BASE+prev.p+'v2.html"><small>← PREV</small><strong data-en="'+prev.en+'" data-zh="'+prev.zh+'">'+prev.en+'</strong></a>'+
+    '<a class="hm" href="'+HOME+'#projects"><small>ELI.Z</small><strong>'+bi("All projects","全部项目")+'</strong></a>'+
+    '<a class="nx" href="'+BASE+next.p+'v2.html"><small>NEXT →</small><strong data-en="'+next.en+'" data-zh="'+next.zh+'">'+next.en+'</strong></a>');
+  var foot=el("div","eli-foot",'<span class="d">© 2026 HANLEI ZENG · ELI.Z</span><span>'+bi("Project "+(idx+1)+" of "+LIST.length,"项目 "+(idx+1)+" / "+LIST.length)+'</span>');
+  document.body.appendChild(nav);document.body.appendChild(foot);
+  nav.querySelectorAll("a").forEach(function(a){a.addEventListener("pointermove",function(e){var r=a.getBoundingClientRect();a.style.setProperty("--x",(e.clientX-r.left)+"px");a.style.setProperty("--y",(e.clientY-r.top)+"px")})});
+
+  /* HUD */
+  var hud=el("div","eli-hud",'<span class="d"></span>'+cur.en.toUpperCase()+' · <b id="eliPct">000%</b><br>PTR <b id="eliPtr">X0000 Y0000</b>');document.body.appendChild(hud);
+  var pct=document.getElementById("eliPct"),ptr=document.getElementById("eliPtr");
+  function onScroll(){var h=document.documentElement.scrollHeight-innerHeight,p=h>0?scrollY/h:0;prog.style.width=(p*100)+"%";pct.textContent=String(Math.round(p*100)).padStart(3,"0")+"%"}
+  addEventListener("scroll",onScroll,{passive:true});onScroll();
+
+  /* shared language: homepage and every project page remember the same choice */
+  function syncLang(){var l;try{l=localStorage.getItem("lang")}catch(e){}
+    if(l!=="zh"&&l!=="en")return;var b=document.querySelector('[data-lang="'+l+'"],[data-l="'+l+'"]');if(b&&!b.classList.contains("active")&&!b.classList.contains("on"))b.click();applyBi(l)}
+  function applyBi(l){[nav,foot,tools||document.createElement("i")].forEach(function(r){r.querySelectorAll("[data-en]").forEach(function(s){s.textContent=s.getAttribute("data-"+l)})})}
+  document.addEventListener("click",function(e){var b=e.target.closest("[data-lang],[data-l]");if(!b)return;var l=b.getAttribute("data-lang")||b.getAttribute("data-l");
+    try{localStorage.setItem("lang",l)}catch(_){}setTimeout(function(){applyBi(l)},0)});
+  function initLang(){setTimeout(function(){syncLang();applyBi(zh()?"zh":"en")},0)}
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initLang);else initLang();
+
+  /* pointer: glow, HUD coordinates, click ping */
+  var gx=0,gy=0,tx=0,ty=0,raf=0;
+  addEventListener("pointermove",function(e){tx=e.clientX;ty=e.clientY;glow.style.opacity=1;ptr.textContent="X"+String(Math.round(tx)).padStart(4,"0")+" Y"+String(Math.round(ty+scrollY)).padStart(4,"0");if(!raf)raf=requestAnimationFrame(loop)},{passive:true});
+  function loop(){gx+=(tx-gx)*.18;gy+=(ty-gy)*.18;glow.style.transform="translate("+(gx-260)+"px,"+(gy-260)+"px)";raf=Math.abs(tx-gx)+Math.abs(ty-gy)>.5?requestAnimationFrame(loop):0}
+  glow.style.left="0";glow.style.top="0";
+  document.addEventListener("pointerdown",function(e){if(reduce)return;var p=el("i","eli-ping");p.style.left=e.clientX+"px";p.style.top=e.clientY+"px";document.body.appendChild(p);setTimeout(function(){p.remove()},520)});
+
+  /* design-software chrome: rulers, guides, Figma-style inspector (same as homepage) */
+  var fine=matchMedia("(hover:hover) and (min-width:761px)").matches;
+  var rx=el("canvas","eli-rx"),ry=el("canvas","eli-ry"),gX=el("div","eli-gx"),gY=el("div","eli-gy");
+  if(fine){[rx,ry,gX,gY].forEach(function(c){document.body.appendChild(c)});document.documentElement.classList.add("eli-chrome")}
+  var mxp=-1,myp=-1;
+  function drawR(){if(!fine)return;var d=Math.min(devicePixelRatio||1,2),W=innerWidth,H=innerHeight,S=16;
+    [[rx,W,S],[ry,S,H]].forEach(function(o){var c=o[0];if(c.width!==o[1]*d||c.height!==o[2]*d){c.width=o[1]*d;c.height=o[2]*d;c.style.width=o[1]+"px";c.style.height=o[2]+"px"}});
+    var x=rx.getContext("2d");x.setTransform(d,0,0,d,0,0);x.clearRect(0,0,W,S);x.fillStyle="rgba(10,10,10,.82)";x.fillRect(0,0,W,S);
+    x.fillStyle="rgba(255,255,255,.28)";for(var i=0;i<W;i+=10){var big=i%100===0;x.fillRect(i,big?S-9:S-4,1,big?9:4)}
+    x.fillStyle="#777";x.font="8px ui-monospace,monospace";for(i=100;i<W;i+=100)x.fillText(i,i+3,8);
+    x.fillStyle="rgba(255,255,255,.16)";x.fillRect(0,S-1,W,1);if(mxp>=0){x.fillStyle="#f2501f";x.fillRect(mxp,0,1,S);x.fillText(Math.round(mxp),mxp+4,8)}
+    var y=ry.getContext("2d");y.setTransform(d,0,0,d,0,0);y.clearRect(0,0,S,H);y.fillStyle="rgba(10,10,10,.82)";y.fillRect(0,0,S,H);
+    var off=scrollY%10,off100=scrollY%100;y.fillStyle="rgba(255,255,255,.28)";
+    for(i=-off;i<H;i+=10){var yy=i+scrollY,bg=Math.round(yy)%100===0;y.fillRect(bg?S-9:S-4,i,bg?9:4,1)}
+    y.fillStyle="#777";y.font="8px ui-monospace,monospace";
+    for(i=100-off100;i<H;i+=100){y.save();y.translate(9,i+3);y.rotate(Math.PI/2);y.fillText(Math.round(i+scrollY),0,0);y.restore()}
+    y.fillStyle="rgba(255,255,255,.16)";y.fillRect(S-1,0,1,H);if(myp>=0){y.fillStyle="#f2501f";y.fillRect(0,myp,S,1)}}
+  var rq=0;function reqR(){if(!rq)rq=requestAnimationFrame(function(){rq=0;drawR()})}
+  addEventListener("pointermove",function(e){mxp=e.clientX;myp=e.clientY;if(fine){gX.style.transform="translateY("+myp+"px)";gY.style.transform="translateX("+mxp+"px)";gX.style.opacity=gY.style.opacity=1}reqR()},{passive:true});
+  document.addEventListener("pointerleave",function(){gX.style.opacity=gY.style.opacity=0});
+  addEventListener("scroll",reqR,{passive:true});addEventListener("resize",reqR);drawR();
+
+  var sel=el("div","eli-sel","<i></i><i></i><i></i><i></i><span></span><em></em>");if(fine)document.body.appendChild(sel);
+  var tag=sel.querySelector("span"),dim=sel.querySelector("em"),target=null;
+  var SEL="img,video,canvas,iframe,figure,h1,h2,h3,button,.fab,.eli-next a,.nav-pill,[class*=card],[class*=Card],[class*=stat],[class*=frame],[class*=tile],[class*=panel],.member,.act,.btn,blockquote,table";
+  function label(t){var n=t.tagName;
+    if(n==="IMG"){var f=(t.currentSrc||t.src||"").split("/").pop().split("?")[0];try{f=decodeURIComponent(f)}catch(_){}return "Image · "+f.slice(0,30)}
+    if(n==="VIDEO")return "Video";if(n==="CANVAS")return "Canvas";if(n==="IFRAME")return "Embed";
+    if(/^H[1-3]$/.test(n))return "Heading · "+n;if(n==="BUTTON"||/btn|fab/.test(t.className)||t.matches(".eli-next a"))return "Button";
+    if(t.classList.contains("nav-pill"))return "Nav · Auto layout";if(n==="FIGURE")return "Figure";
+    return /card/i.test(t.className)?"Card":/stat/.test(t.className)?"Metric":"Frame"}
+  function place(){if(!target)return;var r=target.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight||!r.width){sel.classList.remove("on");return}
+    sel.style.left=(r.left-4)+"px";sel.style.top=(r.top-4)+"px";sel.style.width=(r.width+8)+"px";sel.style.height=(r.height+8)+"px";dim.textContent=Math.round(r.width)+" × "+Math.round(r.height)}
+  document.addEventListener("pointerover",function(e){if(!fine)return;var t=e.target.closest&&e.target.closest(SEL);
+    if(t&&(t.id==="viewerImg"||t.id==="lbimg"||t.closest(".eli-veil,.lightbox,.lb,.viewer,[role=dialog],.site-header,.topbar")&&!t.classList.contains("nav-pill"))){t=null}
+    if(t){var r=t.getBoundingClientRect();if(r.width<40||r.height<20||(r.width>innerWidth*.98&&r.height>innerHeight*.9))t=null}
+    if(t===target)return;target=t;if(!t){sel.classList.remove("on");return}
+    tag.textContent=label(t);place();sel.classList.add("on")});
+  addEventListener("scroll",place,{passive:true});addEventListener("resize",place);
+
+  /* image loading: decode off the main thread, lazy below the fold */
+  document.querySelectorAll("img").forEach(function(im,i){im.decoding="async";if(!im.hasAttribute("loading")&&im.getBoundingClientRect().top>innerHeight*1.2)im.loading="lazy"});
+
+  /* leaving: native navigation (never blocked); the veil only decorates and clears itself if the page stays */
+  function veilIn(href){if(reduce)return;veil.querySelector(".t").textContent=/CV-project/.test(href)?"ELI.Z":"LOADING";
+    veil.classList.remove("out","ready");veil.classList.add("idle");void veil.offsetWidth;veil.classList.remove("idle");veil.classList.add("in");
+    setTimeout(function(){veil.classList.remove("in");veil.classList.add("out")},1600)}
+  document.addEventListener("click",function(e){var a=e.target.closest("a[href]");if(!a||e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;
+    if(a.target&&a.target!=="_self")return;var h=a.href;if(!/^https:\/\/cooleli\.github\.io\/(CV-project|Portfolio-page)\//.test(h))return;
+    if(a.getAttribute("href").charAt(0)==="#"||/\.(pdf|mp4|png|jpe?g|webp)(\?|$)/i.test(h))return;veilIn(h)});
+  addEventListener("pageshow",function(e){if(e.persisted){veil.classList.remove("in","idle");veil.classList.add("out")}});
+  /* ---------- in-page anchors: always scroll in place (works inside any preview frame, never reloads) ---------- */
+document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a||e.defaultPrevented)return;
+  var id=a.getAttribute("href").slice(1),t=id?document.getElementById(id):null;if(!id||id==="top"){e.preventDefault();scrollTo({top:0,behavior:"smooth"});return}
+  if(!t)return;e.preventDefault();var y=t.getBoundingClientRect().top+scrollY-(id==="top"?0:70);scrollTo({top:Math.max(0,y),behavior:"smooth"});
+  try{history.replaceState(null,"","#"+id)}catch(_){}});
+})();
+</script>
+</body>
+</html>
